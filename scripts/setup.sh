@@ -28,22 +28,15 @@ cp ~/backup.sh /home/"$USER"/backup.sh
 (crontab -u "$USER" -l 2>/dev/null; echo "0 0 */1 * * /home/$USER/backup.sh $HOST") | crontab -u "$USER" -
 
 # setup 1password
-curl -sS https://downloads.1password.com/linux/keys/1password.asc | sudo gpg --dearmor --output /usr/share/keyrings/1password-archive-keyring.gpg
-echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/1password-archive-keyring.gpg] https://downloads.1password.com/linux/debian/amd64 stable main' | sudo tee /etc/apt/sources.list.d/1password.list
-sudo mkdir -p /etc/debsig/policies/AC2D62742012EA22/
-curl -sS https://downloads.1password.com/linux/debian/debsig/1password.pol | sudo tee /etc/debsig/policies/AC2D62742012EA22/1password.pol
-sudo mkdir -p /usr/share/debsig/keyrings/AC2D62742012EA22
-curl -sS https://downloads.1password.com/linux/keys/1password.asc | sudo gpg --dearmor --output /usr/share/debsig/keyrings/AC2D62742012EA22/debsig.gpg
-sudo apt-get update && sudo apt-get install 1password -y
+wget -qO ~/Downloads/1password-latest.deb https://downloads.1password.com/linux/debian/amd64/stable/1password-latest.deb
+sudo apt-get update && sudo apt-get install ~/Downloads/1password-latest.deb -y
 
 # setup google chrome
-wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-sudo apt-get update && sudo apt-get install ./google-chrome-stable_current_amd64.deb -y
+wget -qO ~/Downloads/google-chrome-stable_current_amd64.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+sudo apt-get update && sudo apt-get install ~/Downloads/google-chrome-stable_current_amd64.deb -y
 
 # setup tailscale
-curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/focal.noarmor.gpg | sudo tee /usr/share/keyrings/tailscale-archive-keyring.gpg >/dev/null
-curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/focal.tailscale-keyring.list | sudo tee /etc/apt/sources.list.d/tailscale.list
-sudo apt-get update && sudo apt-get install tailscale -y
+curl -fsSL https://tailscale.com/install.sh | sh
 
 # setup terraform
 wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor | sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null
@@ -74,17 +67,19 @@ if [ -d "$HOME/.oh-my-zsh" ]; then
   git clone --depth 1 -- https://github.com/Aloxaf/fzf-tab "${ZSH_CUSTOM:-"$HOME"/.oh-my-zsh/custom}"/plugins/fzf-tab
   git clone --depth 1 -- https://github.com/zsh-users/zsh-autosuggestions "${ZSH_CUSTOM:-"$HOME"/.oh-my-zsh/custom}"/plugins/zsh-autosuggestions
   git clone --depth 1 -- https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM:-"$HOME"/.oh-my-zsh/custom}"/plugins/zsh-syntax-highlighting
-  git clone --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git $ZSH_CUSTOM/plugins/zsh-autocomplete
+  git clone --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git "$ZSH_CUSTOM"/plugins/zsh-autocomplete
 fi
-                                                                                        
-# install Source Code pro fonts
-mkdir -p ~/.fonts/adobe-fonts/source-code-pro
-git clone --depth 1 https://github.com/adobe-fonts/source-code-pro.git ~/.fonts/adobe-fonts/source-code-pro
-fc-cache -f -v ~/.fonts/adobe-fonts/source-code-pro
+
+# install Source Code Nerd fonts single user
+wget -qO ~/Downloads/SourceCodePro.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/SourceCodePro.zip
+unzip -o ~/Downloads/SourceCodePro.zip -d ~/Downloads/SourceCodePro
+mkdir -p ~/.local/share/fonts
+cp ~/Downloads/SourceCodePro ~/.local/share/fonts/
+fc-cache -fv
 
 # load gnome-terminal profile config
 if command -v dconf >&2; then
-  dconf load /org/gnome/terminal/legacy/profiles:/ < ~/gnome-terminal-profiles.dconf
+  dconf load /org/gnome/terminal/legacy/profiles:/ < ./config/terminal/colors/monokai-dark.dconf
 fi
 
 # setup zsh as default shell
