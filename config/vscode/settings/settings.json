@@ -1,0 +1,141 @@
+{
+  "workbench.iconTheme": "material-icon-theme",
+  "explorer.confirmDelete": false,
+  "workbench.startupEditor": "none",
+
+  "editor.minimap.enabled": false,
+  "editor.renderWhitespace": "all",
+  "editor.renderControlCharacters": true,
+  "editor.autoIndent": "none",
+  "editor.tabSize": 2,
+  "editor.fontFamily": "Source Code Pro, 'Courier New', monospace",
+  "editor.formatOnPaste": true,
+  "editor.unicodeHighlight.invisibleCharacters": false,
+  "editor.fontSize": 14,
+  "editor.codeActionWidget.showHeaders": false,
+  "editor.glyphMargin": true,
+  "editor.folding": true,
+  "emmet.triggerExpansionOnTab": true,
+  "html.format.wrapAttributes": "force-aligned",
+  "html.format.wrapLineLength": 0,
+  "javascript.updateImportsOnFileMove.enabled": "never",
+  "html.format.indentHandlebars": true,
+  "html.format.indentInnerHtml": true,
+  "diffEditor.renderSideBySide": false,
+  "explorer.confirmDragAndDrop": false,
+  "html.format.enable": false,
+  "html.format.preserveNewLines": false,
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[markdown]": {
+    "editor.wordWrapColumn": 100,
+    "editor.wordWrap": "off",
+    "editor.defaultFormatter": "yzhang.markdown-all-in-one"
+  },
+  "files.associations": {
+    "*.md": "markdown"
+  },
+  "html.hover.documentation": false,
+  "html.hover.references": false,
+  "css.hover.documentation": false,
+  "css.hover.references": false,
+  "scss.hover.documentation": false,
+  "scss.hover.references": false,
+  "less.hover.documentation": false,
+  "less.hover.references": false,
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "explorer.openEditors.visible": 0,
+  "gitlens.advanced.messages": {
+    "suppressGitMissingWarning": true
+  },
+  "git.autofetch": true,
+  "redhat.telemetry.enabled": false,
+  "security.workspace.trust.untrustedFiles": "open",
+  "terminal.external.windowsExec": "terminal.exe",
+  "terminal.integrated.defaultProfile.windows": "PowerShell",
+  "terminal.integrated.tabs.enabled": false,
+  "terminal.integrated.cursorStyle": "line",
+  "files.autoSave": "afterDelay",
+  "files.exclude": {
+    "**/.git": false
+  },
+  "diffEditor.wordWrap": "off",
+  "terminal.integrated.enableMultiLinePasteWarning": false,
+  "files.eol": "\n",
+  "githubPullRequests.pullBranch": "never",
+  "[yaml]": {
+    "breadcrumbs.showFiles": true,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.autoIndent": "keep",
+    "gitlens.codeLens.scopes": ["document"],
+    "editor.quickSuggestions": {
+      "other": true,
+      "comments": false,
+      "strings": true
+    }
+  },
+  "git.confirmSync": false,
+"terminal.integrated.fontSize": 14,
+  "window.restoreFullscreen": true,
+  "window.newWindowDimensions": "maximized",
+  "workbench.tips.enabled": false,
+  "extensions.ignoreRecommendations": true,
+  "[terraform]": {
+    "editor.defaultFormatter": "hashicorp.terraform",
+    "editor.formatOnSave": true,
+    "editor.formatOnSaveMode": "file"
+  },
+  "[terraform-vars]": {
+    "editor.defaultFormatter": "hashicorp.terraform",
+    "editor.formatOnSave": true,
+    "editor.formatOnSaveMode": "file"
+  },
+  "workbench.editor.enablePreview": false,
+  "gitlens.views.repositories.showCommits": false,
+  "workbench.editorAssociations": {
+    "git-rebase-todo": "gitlens.rebase"
+  },
+  "git.ignoreRebaseWarning": true,
+  "terraform.experimentalFeatures.validateOnSave": true,
+  "markdown.extension.toc.updateOnSave": false,
+  "github.copilot.editor.enableAutoCompletions": true,
+  "diffEditor.ignoreTrimWhitespace": true,
+  "workbench.colorTheme": "Glory Muffin",
+  "githubPullRequests.fileListLayout": "flat",
+  "css.format.enable": false,
+  "githubPullRequests.terminalLinksHandler": "github",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "workbench.sideBar.location": "right",
+  "window.customTitleBarVisibility": "auto",
+  "git.openRepositoryInParentFolders": "never",
+  "gitlens.graph.onlyFollowFirstParent": true,
+  "gitlens.graph.dimMergeCommits": true,
+  "editor.pasteAs.preferences": [
+    "text.plain"
+  ],
+  "gitlens.graph.minimap.additionalTypes": [],
+  "gitlens.graph.minimap.enabled": false,
+  "github.copilot.nextEditSuggestions.enabled": true,
+  "githubLocalActions.actCommand": "gh act",
+  "chat.mcp.autostart": "newAndOutdated",
+  "notebook.codeActionsOnSave": {
+
+},
+"[dockercompose]": {
+  "editor.insertSpaces": true,
+  "editor.tabSize": 2,
+  "editor.autoIndent": "advanced",
+  "editor.defaultFormatter": "redhat.vscode-yaml"
+},
+"[github-actions-workflow]": {
+  "editor.defaultFormatter": "redhat.vscode-yaml"
+},
+"gitlens.ai.model": "vscode",
+"gitlens.ai.vscode.model": "copilot:gpt-4.1"
+}
