@@ -1,0 +1,9 @@
+apt-transport-https
+ca-certificates
+gnupg
+software-properties-common
+dconf-editor
+curl
+htop
+git
+zsh

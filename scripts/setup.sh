@@ -3,23 +3,16 @@
 HOST="$1"
 
 sudo apt-get update
-sudo apt-get install -y \
-  apt-transport-https \
-  ca-certificates \
-  gnupg \
-  software-properties-common \
-  dconf-editor \
-  curl \
-  htop \
-  git \
-  zsh \
 
-# remove unwanted packages
-sudo apt-get remove gnome-robots gnome-chess aisleriot five-or-more gnome-mahjongg tali four-in-a-row gnome-klotski gnome-mines gnome-nibbles gnome-2048 gnome-sudoku gnome-taquin gnome-tetravex hitori lightsoff quadrapassel swell-foop iagno -y
-sudo apt-get remove	deja-dup goldendict gnote yelp totem brasero brasero-common cheese sound-juicer gnome-sound-recorder -y
-sudo apt-get remove eog simple-scan shotwell -y
-sudo apt-get remove pidgin hexchat transmission-gtk remmina deluge deluge-common deluge-gtk thunderbird -y
-sudo apt-get remove firefox-esr -y
+# Install required packages
+if [ -f "./required-packages" ]; then
+  xargs -a ./required-packages sudo apt-get install -y
+fi
+
+# Remove unwanted packages
+if [ -f "./unwanted-packages" ]; then
+  xargs -a ./unwanted-packages sudo apt-get remove -y
+fi
 sudo apt-get autoremove -y
 sudo apt-get autoclean -y
 
