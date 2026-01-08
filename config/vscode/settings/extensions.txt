@@ -3,6 +3,7 @@ amyangxyz.copilg-theme
 ashtondev.glory-muffin
 bierner.markdown-mermaid
 bierner.markdown-preview-github-styles
+continue.continue
 davidanson.vscode-markdownlint
 eamodio.gitlens
 editorconfig.editorconfig
@@ -10,6 +11,7 @@ esbenp.prettier-vscode
 gerane.theme-flatlandmonokai
 github.copilot
 github.copilot-chat
+github.vscode-codeql
 github.vscode-github-actions
 github.vscode-pull-request-github
 hashicorp.terraform

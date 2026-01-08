@@ -1,9 +1,13 @@
 apt-transport-https
 ca-certificates
 gnupg
-software-properties-common
 dconf-editor
 curl
 htop
 git
 zsh
+ripgrep
+fd-find
+unzip
+wget
+build-essential
