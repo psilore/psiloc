@@ -43,10 +43,10 @@ cd scripts/
 - Option **20**: Run Security Audit
 - Option **23**: Revert Security Hardening
 
-Alternatively, run them directly (requires sudo for hardening/unhardening):
+Alternatively, run them directly (requires sudo for some audit checks and all hardening tasks):
 
 ```bash
-./scripts/audit.sh
+sudo ./scripts/audit.sh
 sudo ./scripts/harden.sh
 sudo ./scripts/unharden.sh
 ```
