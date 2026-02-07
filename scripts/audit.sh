@@ -186,10 +186,25 @@ check_hardware_os() {
     print_header "Hardware & OS Hardening"
     
     # 1. Bluetooth status
-    if systemctl is-active --quiet bluetooth 2>/dev/null; then
+    local bt_radio_enabled=false
+    # Check if any bluetooth rfkill device is NOT soft-blocked (state != 0)
+    if [ -d /sys/class/rfkill ]; then
+        for rf in /sys/class/rfkill/rfkill*; do
+            if [ -f "$rf/type" ] && [ "$(cat "$rf/type")" = "bluetooth" ]; then
+                if [ "$(cat "$rf/state")" != "0" ]; then
+                    bt_radio_enabled=true
+                    break
+                fi
+            fi
+        done
+    fi
+
+    if [ "$bt_radio_enabled" = true ]; then
         print_result "Bluetooth Status" "WARN" "Enabled" "Disable to reduce radio attack surface."
+    elif systemctl is-active --quiet bluetooth 2>/dev/null; then
+        print_result "Bluetooth Status" "WARN" "Svc Active" "Service is active but radio might be off."
     else
-        print_result "Bluetooth Status" "PASS" "Disabled" "Bluetooth radio is safely disabled."
+        print_result "Bluetooth Status" "PASS" "Disabled" "Bluetooth radio and service are off."
     fi
 
     # 2. USB Protection
@@ -251,7 +266,7 @@ check_network() {
         fi
     fi
 
-    if command -v ufw > /dev/null 2>&1 && sudo ufw status 2>/dev/null | grep -q "active"; then
+    if command -v ufw > /dev/null 2>&1 && sudo ufw status 2>/dev/null | grep -qE "^Status: active"; then
         print_result "UFW Status" "PASS" "Active" "Blocks unsolicited inbound traffic."
     else
         print_result "UFW Status" "FAIL" "Inactive" "System exposed to local network traffic."
@@ -308,10 +323,13 @@ print_summary() {
     printf "${BOLD}${BLUE}║${NC} %b%-101s%b ${BOLD}${BLUE}║${NC}\n" "$YELLOW" " Warnings:     $WARNED_CHECKS" "$NC"
     echo -e "${BOLD}${BLUE}╚═══════════════════════════════════════════════════════════════════════════════════════════════════════╝${NC}"
     
-    if [ "$FAILED_CHECKS" -gt 0 ]; then
-        echo -e "\n${RED}${BOLD}ATTENTION:${NC} Critical security issues found on this workstation."
+    if [ "$FAILED_CHECKS" -eq 0 ] && [ "$WARNED_CHECKS" -eq 0 ]; then
+        echo -e "\n${GREEN}${BOLD}SECURITY STATUS:${NC} Excellent. Your workstation follows the recommended hardening profile."
+    elif [ "$FAILED_CHECKS" -eq 0 ]; then
+        echo -e "\n${YELLOW}${BOLD}SECURITY STATUS:${NC} Good. Consider reviewing the warnings above to further harden your system."
     else
-        echo -e "\n${GREEN}${BOLD}WELL DONE:${NC} This laptop meets high security standards."
+        echo -e "\n${BLUE}${BOLD}SECURITY STATUS:${NC} Assessment complete. Suggested improvements have been identified to better protect your system."
+        echo -e "You can use the 'harden.sh' script to address some of these findings."
     fi
 }
 
