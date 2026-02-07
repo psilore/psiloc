@@ -284,13 +284,6 @@ install_ghostty() {
     fi
 }
 
-setup_firewall() {
-    print_message "Setting up UFW firewall..."
-    sudo ufw default deny incoming
-    sudo ufw default allow outgoing
-    sudo ufw limit ssh
-    sudo ufw enable
-}
 
 refresh_shell() {
     print_message "Refreshing shell configuration..."
@@ -341,12 +334,14 @@ show_menu() {
     echo "  16) Setup GNOME Terminal profile"
     echo "  17) Install Ghostty terminal"
     echo "  18) Set Zsh as default shell"
-    echo "  19) Setup UFW firewall"
-    echo "  20) Install ALL (runs all options)"
-    echo "  21) Refresh shell (reload configuration)"
+    echo "  19) Workstation Security Hardening & Firewall (harden.sh)"
+    echo "  20) Run Local Security Audit (audit.sh)"
+    echo "  21) Install ALL (runs all options)"
+    echo "  22) Refresh shell (reload configuration)"
+    echo "  23) Revert Security Hardening (unharden.sh)"
     echo "  0)  Exit"
     echo ""
-    echo -ne "${YELLOW}Enter your choice [0-21]:${NC} "
+    echo -ne "${YELLOW}Enter your choice [0-22]:${NC} "
 }
 
 # Main loop
@@ -373,8 +368,9 @@ while true; do
         16) setup_gnome_terminal ;;
         17) install_ghostty ;;
         18) setup_zsh_default ;;
-        19) setup_firewall ;;
-        20)
+        19) "$SCRIPT_DIR/harden.sh" ;;
+        20) "$SCRIPT_DIR/audit.sh" ;;
+        21)
             print_message "Installing everything..."
             sudo apt-get update
             install_required_packages
@@ -395,10 +391,11 @@ while true; do
             setup_gnome_terminal
             install_ghostty
             setup_zsh_default
-            setup_firewall
+            "$SCRIPT_DIR/harden.sh"
             print_message "All installations complete!"
             ;;
-        21) refresh_shell ;;
+        22) refresh_shell ;;
+        23) "$SCRIPT_DIR/unharden.sh" ;;
         0)
             print_message "Exiting setup script. Goodbye!"
             exit 0
