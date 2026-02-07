@@ -50,6 +50,8 @@ Alternatively, run them directly (requires sudo for hardening/unhardening):
 sudo ./scripts/harden.sh
 sudo ./scripts/unharden.sh
 ```
+## Example Audit Output
+![Security Audit Example](images/audit.png)
 
 ## Disclaimer
 These scripts are designed for standard Debian-based desktop/laptop environments. Use caution on servers or systems with highly customized kernels/partitioning. Always review the interactive prompts before confirming a change.
