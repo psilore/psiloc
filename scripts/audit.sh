@@ -25,9 +25,9 @@ WARNED_CHECKS=0
 print_header() {
     echo -e "\n${BOLD}${BLUE}┌───────────────────────────────────────────────────────────────────────────────────────────────────────┐${NC}"
     printf "${BOLD}${BLUE}│${NC} %-101s ${BOLD}${BLUE}│${NC}\n" "$1"
-    echo -e "${BOLD}${BLUE}├──────────────────────────────┬──────────┬─────────────┬───────────────────────────────────────────────┤${NC}"
-    printf "${BOLD}${BLUE}│${NC} %-28s ${BOLD}${BLUE}│${NC} %-8s ${BOLD}${BLUE}│${NC} %-11s ${BOLD}${BLUE}│${NC} %-45s ${BOLD}${BLUE}│${NC}\n" "Security Check" "Status" "Result" "Explanation/Impact"
-    echo -e "${BOLD}${BLUE}├──────────────────────────────┼──────────┼─────────────┼───────────────────────────────────────────────┤${NC}"
+    echo -e "${BOLD}${BLUE}├────────────────────────────────────────┬──────────┬─────────────┬─────────────────────────────────────┤${NC}"
+    printf "${BOLD}${BLUE}│${NC} %-38s ${BOLD}${BLUE}│${NC} %-8s ${BOLD}${BLUE}│${NC} %-11s ${BOLD}${BLUE}│${NC} %-35s ${BOLD}${BLUE}│${NC}\n" "Security Check" "Status" "Result" "Explanation/Impact"
+    echo -e "${BOLD}${BLUE}├────────────────────────────────────────┼──────────┼─────────────┼─────────────────────────────────────┤${NC}"
 }
 
 print_result() {
@@ -55,11 +55,11 @@ print_result() {
     
     # We use %b for status_color to avoid it being counted in the padding of the next column
     # The borders are now explicitly colored to match the header/footer
-    printf "${BOLD}${BLUE}│${NC} %-28.28s ${BOLD}${BLUE}│${NC} %b%-8s%b ${BOLD}${BLUE}│${NC} %-11.11s ${BOLD}${BLUE}│${NC} %-45.45s ${BOLD}${BLUE}│${NC}\n" "$check" "$status_color" "$status" "$NC" "$detail" "$explanation"
+    printf "${BOLD}${BLUE}│${NC} %-38.38s ${BOLD}${BLUE}│${NC} %b%-8s%b ${BOLD}${BLUE}│${NC} %-11.11s ${BOLD}${BLUE}│${NC} %-35.35s ${BOLD}${BLUE}│${NC}\n" "$check" "$status_color" "$status" "$NC" "$detail" "$explanation"
 }
 
 print_footer() {
-    echo -e "${BOLD}${BLUE}└──────────────────────────────┴──────────┴─────────────┴───────────────────────────────────────────────┘${NC}"
+    echo -e "${BOLD}${BLUE}└────────────────────────────────────────┴──────────┴─────────────┴─────────────────────────────────────┘${NC}"
 }
 
 check_physical_boot() {
@@ -149,18 +149,18 @@ check_ssh_client() {
             local display_name
             display_name=$(echo "$config" | sed "s|$HOME|~|")
             
-            # Check HashKnownHosts
+            # Check HashKnownHosts (Anonymizes the known_hosts file)
             if grep -Ei "^\s*HashKnownHosts\s+yes" "$config" > /dev/null 2>&1; then
-                print_result "Client ($display_name): Hash" "PASS" "Enabled" "Anonymizes known_hosts file."
+                print_result "SSH Hash ($display_name)" "PASS" "Enabled" "Anonymizes hostnames in known_hosts."
             else
-                print_result "Client ($display_name): Hash" "WARN" "Disabled" "Plaintext known_hosts found."
+                print_result "SSH Hash ($display_name)" "WARN" "Disabled" "Known_hosts contains plaintext hostnames."
             fi
             
-            # Check StrictHostKeyChecking
+            # Check StrictHostKeyChecking (Prevents Man-in-the-Middle attacks)
             if grep -Ei "^\s*StrictHostKeyChecking\s+(yes|ask)" "$config" > /dev/null 2>&1; then
-                print_result "Client ($display_name): Keys" "PASS" "Enabled" "Verifies host to prevent MITM attacks."
+                print_result "SSH MITM ($display_name)" "PASS" "Enabled" "Strict host key verification is active."
             else
-                print_result "Client ($display_name): Keys" "WARN" "Disabled" "MITM risk on this connection."
+                print_result "SSH MITM ($display_name)" "WARN" "Disabled" "MITM risk: host keys are not verified."
             fi
         fi
     done
