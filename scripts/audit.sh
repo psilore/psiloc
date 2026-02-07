@@ -23,11 +23,11 @@ FAILED_CHECKS=0
 WARNED_CHECKS=0
 
 print_header() {
-    echo -e "\n${BOLD}${BLUE}┌─────────────────────────────────────────────────────────────────────────────────────────┐${NC}"
-    printf "${BOLD}${BLUE}│${NC} %-87s ${BOLD}${BLUE}│${NC}\n" "$1"
-    echo -e "${BOLD}${BLUE}├───────────────────────────────┬──────────┬─────────────┬────────────────────────────────┤${NC}"
-    printf "${BOLD}${BLUE}│${NC} %-29s ${BOLD}${BLUE}│${NC} %-8s ${BOLD}${BLUE}│${NC} %-11s ${BOLD}${BLUE}│${NC} %-30s ${BOLD}${BLUE}│${NC}\n" "Security Check" "Status" "Result" "Explanation/Impact"
-    echo -e "${BOLD}${BLUE}├───────────────────────────────┼──────────┼─────────────┼────────────────────────────────┤${NC}"
+    echo -e "\n${BOLD}${BLUE}┌───────────────────────────────────────────────────────────────────────────────────────────────────────┐${NC}"
+    printf "${BOLD}${BLUE}│${NC} %-101s ${BOLD}${BLUE}│${NC}\n" "$1"
+    echo -e "${BOLD}${BLUE}├──────────────────────────────┬──────────┬─────────────┬───────────────────────────────────────────────┤${NC}"
+    printf "${BOLD}${BLUE}│${NC} %-28s ${BOLD}${BLUE}│${NC} %-8s ${BOLD}${BLUE}│${NC} %-11s ${BOLD}${BLUE}│${NC} %-45s ${BOLD}${BLUE}│${NC}\n" "Security Check" "Status" "Result" "Explanation/Impact"
+    echo -e "${BOLD}${BLUE}├──────────────────────────────┼──────────┼─────────────┼───────────────────────────────────────────────┤${NC}"
 }
 
 print_result() {
@@ -55,11 +55,11 @@ print_result() {
     
     # We use %b for status_color to avoid it being counted in the padding of the next column
     # The borders are now explicitly colored to match the header/footer
-    printf "${BOLD}${BLUE}│${NC} %-29.29s ${BOLD}${BLUE}│${NC} %b%-8s%b ${BOLD}${BLUE}│${NC} %-11.11s ${BOLD}${BLUE}│${NC} %-30.30s ${BOLD}${BLUE}│${NC}\n" "$check" "$status_color" "$status" "$NC" "$detail" "$explanation"
+    printf "${BOLD}${BLUE}│${NC} %-28.28s ${BOLD}${BLUE}│${NC} %b%-8s%b ${BOLD}${BLUE}│${NC} %-11.11s ${BOLD}${BLUE}│${NC} %-45.45s ${BOLD}${BLUE}│${NC}\n" "$check" "$status_color" "$status" "$NC" "$detail" "$explanation"
 }
 
 print_footer() {
-    echo -e "${BOLD}${BLUE}└───────────────────────────────┴──────────┴─────────────┴────────────────────────────────┘${NC}"
+    echo -e "${BOLD}${BLUE}└──────────────────────────────┴──────────┴─────────────┴───────────────────────────────────────────────┘${NC}"
 }
 
 check_physical_boot() {
@@ -67,9 +67,9 @@ check_physical_boot() {
     
     # 1. Disk Encryption (LUKS)
     if lsblk -f | grep -iq "crypto_LUKS"; then
-        print_result "LUKS Disk Encryption" "PASS" "Detected" "Protects data if the laptop is lost or stolen."
+        print_result "LUKS Disk Encryption" "PASS" "Detected" "Protects data if the laptop is stolen."
     else
-        print_result "LUKS Disk Encryption" "FAIL" "Not Found" "Data is at risk if physical access is gained."
+        print_result "LUKS Disk Encryption" "FAIL" "Not Found" "Data is at risk if physical device lost."
     fi
 
     # 2. Secure Boot
@@ -77,15 +77,15 @@ check_physical_boot() {
         local sb_status
         sb_status=$(mokutil --sb-state 2>/dev/null)
         if echo "$sb_status" | grep -iq "enabled"; then
-            print_result "Secure Boot" "PASS" "Enabled" "Prevents unauthorized OS/kernel from booting."
+            print_result "Secure Boot" "PASS" "Enabled" "Blocks unauthorized bootloaders/kernels."
         else
-            print_result "Secure Boot" "WARN" "Disabled" "Risk of bootkit/rootkit infections at boot."
+            print_result "Secure Boot" "WARN" "Disabled" "Risk of boot/rootkit persistence."
         fi
     elif command -v bootctl >/dev/null 2>&1; then
         if bootctl status 2>/dev/null | grep -iq "Secure Boot: enabled"; then
-            print_result "Secure Boot" "PASS" "Enabled" "Prevents unauthorized OS/kernel from booting."
+            print_result "Secure Boot" "PASS" "Enabled" "Blocks unauthorized bootloaders/kernels."
         else
-            print_result "Secure Boot" "WARN" "Disabled" "Risk of bootkit/rootkit infections at boot."
+            print_result "Secure Boot" "WARN" "Disabled" "Risk of boot/rootkit persistence."
         fi
     else
         print_result "Secure Boot" "WARN" "Unknown" "Could not determine Secure Boot status."
@@ -104,7 +104,7 @@ check_desktop_security() {
         if [ "$lock_enabled" == "true" ]; then
             print_result "GNOME Idle Lock" "PASS" "Enabled" "Automatically locks screen when idle."
         elif [ "$lock_enabled" == "false" ]; then
-            print_result "GNOME Idle Lock" "FAIL" "Disabled" "Laptop remains accessible when left unattended."
+            print_result "GNOME Idle Lock" "FAIL" "Disabled" "Laptop remains accessible when unattended."
         fi
 
         local idle_delay
@@ -123,9 +123,9 @@ check_desktop_security() {
     local home_perms
     home_perms=$(stat -c "%a" "$HOME")
     if [ "$home_perms" -le "750" ]; then
-        print_result "Home Dir Perms" "PASS" "$home_perms" "Restricts other local users from browsing your data."
+        print_result "Home Dir Perms" "PASS" "$home_perms" "Restricts local users browsing your data."
     else
-        print_result "Home Dir Perms" "WARN" "$home_perms" "Home directory is too open to other local users."
+        print_result "Home Dir Perms" "WARN" "$home_perms" "Home dir too open to other local users."
     fi
     
     print_footer
@@ -151,16 +151,16 @@ check_ssh_client() {
             
             # Check HashKnownHosts
             if grep -Ei "^\s*HashKnownHosts\s+yes" "$config" > /dev/null 2>&1; then
-                print_result "Client ($display_name): Hash" "PASS" "Enabled" "Hides target IPs/hostnames in known_hosts file."
+                print_result "Client ($display_name): Hash" "PASS" "Enabled" "Anonymizes known_hosts file."
             else
-                print_result "Client ($display_name): Hash" "WARN" "Disabled" "Known hosts are stored in plain text."
+                print_result "Client ($display_name): Hash" "WARN" "Disabled" "Plaintext known_hosts found."
             fi
             
             # Check StrictHostKeyChecking
             if grep -Ei "^\s*StrictHostKeyChecking\s+(yes|ask)" "$config" > /dev/null 2>&1; then
-                print_result "Client ($display_name): Keys" "PASS" "Enabled" "Validates host identity before connecting."
+                print_result "Client ($display_name): Keys" "PASS" "Enabled" "Verifies host to prevent MITM attacks."
             else
-                print_result "Client ($display_name): Keys" "WARN" "Disabled" "Vulnerable to machine-in-the-middle attacks."
+                print_result "Client ($display_name): Keys" "WARN" "Disabled" "MITM risk on this connection."
             fi
         fi
     done
@@ -173,9 +173,9 @@ check_ssh_client() {
         local ssh_dir_perms
         ssh_dir_perms=$(stat -c "%a" "$HOME/.ssh")
         if [ "$ssh_dir_perms" -le "700" ]; then
-            print_result "SSH Directory Perms" "PASS" "$ssh_dir_perms" "Required to protect private keys from exposure."
+            print_result "SSH Directory Perms" "PASS" "$ssh_dir_perms" "Secures keys from other users."
         else
-            print_result "SSH Directory Perms" "FAIL" "$ssh_dir_perms" "CRITICAL: Keys are accessible to other users!"
+            print_result "SSH Directory Perms" "FAIL" "$ssh_dir_perms" "Keys accessible to others!"
         fi
     fi
     
@@ -187,23 +187,23 @@ check_hardware_os() {
     
     # 1. Bluetooth status
     if systemctl is-active --quiet bluetooth 2>/dev/null; then
-        print_result "Bluetooth Status" "WARN" "Enabled" "Disable if not in use to reduce radio attack surface."
+        print_result "Bluetooth Status" "WARN" "Enabled" "Disable to reduce radio attack surface."
     else
         print_result "Bluetooth Status" "PASS" "Disabled" "Bluetooth radio is safely disabled."
     fi
 
     # 2. USB Protection
     if systemctl is-active --quiet usbguard 2>/dev/null; then
-        print_result "USBGuard" "PASS" "Active" "Protects against malicious HID/storage devices."
+        print_result "USBGuard" "PASS" "Active" "Blocks malicious USB hardware."
     else
-        print_result "USBGuard" "WARN" "Inactive" "Consider installing usbguard for physical port security."
+        print_result "USBGuard" "WARN" "Inactive" "Consider usbguard for port security."
     fi
 
     # 3. Firejail (Application Sandboxing)
     if command -v firejail >/dev/null 2>&1; then
-        print_result "Firejail Sandbox" "PASS" "Installed" "Enhances browser/app security via sandboxing."
+        print_result "Firejail Sandbox" "PASS" "Installed" "Isolates apps via sandboxing."
     else
-        print_result "Firejail Sandbox" "WARN" "Missing" "Consider for extra browser & app isolation."
+        print_result "Firejail Sandbox" "WARN" "Missing" "Consider for browser/app isolation."
     fi
     
     print_footer
@@ -214,11 +214,11 @@ check_privileges() {
     
     # Check sudoers for NOPASSWD
     if sudo -n -l 2>/dev/null | grep -q "NOPASSWD: ALL"; then
-        print_result "Sudo NOPASSWD" "FAIL" "Enabled (ALL)" "Critical risk: any script can gain root without prompt."
+        print_result "Sudo NOPASSWD" "FAIL" "Enabled" "Scripts can gain root without prompt."
     elif sudo -n -l 2>/dev/null | grep -q "NOPASSWD:"; then
-        print_result "Sudo NOPASSWD" "WARN" "Specific deps" "Some commands run without sudo. Risk of breakout."
+        print_result "Sudo NOPASSWD" "WARN" "Partial" "Some commands run without sudo. Breakout risk."
     else
-        print_result "Sudo NOPASSWD" "PASS" "None found" "Requires password for all administrative actions."
+        print_result "Sudo NOPASSWD" "PASS" "None" "Requires password for all admin actions."
     fi
 
     # World writable files in sensitive areas
@@ -245,20 +245,20 @@ check_network() {
         local listening_count
         listening_count=$(ss -tuln | grep "LISTEN" | grep -v "127.0.0.1" | grep -v "::1" | wc -l)
         if [ "$listening_count" -gt 3 ]; then
-            print_result "External Services" "WARN" "$listening_count ports" "Workstations should run minimal network services."
+            print_result "External Services" "WARN" "$listening_count ports" "Keep external services to a minimum."
         else
-            print_result "External Services" "PASS" "$listening_count ports" "Minimal set of services exposed to network."
+            print_result "External Services" "PASS" "$listening_count ports" "Minimal set of services exposed."
         fi
     fi
 
     if command -v ufw > /dev/null 2>&1 && sudo ufw status 2>/dev/null | grep -q "active"; then
-        print_result "UFW Status" "PASS" "Active" "Restricts unsolicited inbound network traffic."
+        print_result "UFW Status" "PASS" "Active" "Blocks unsolicited inbound traffic."
     else
-        print_result "UFW Status" "FAIL" "Inactive" "System exposed to all local network traffic."
+        print_result "UFW Status" "FAIL" "Inactive" "System exposed to local network traffic."
     fi
 
     if [ -f /etc/apt/apt.conf.d/20auto-upgrades ]; then
-        print_result "Auto-Upgrades" "PASS" "Enabled" "Security patches are applied automatically."
+        print_result "Auto-Upgrades" "PASS" "Enabled" "Security patches applied automatically."
     else
         print_result "Auto-Upgrades" "FAIL" "Missing" "Manual patching prone to being forgotten."
     fi
@@ -269,12 +269,12 @@ check_sysctl() {
     print_header "Kernel Hardening (sysctl)"
     
     local checks=(
-        "net.ipv4.tcp_syncookies=1|TCP SYN Cookies|Protects against SYN flood (DDoS) attacks."
-        "kernel.randomize_va_space=2|ASLR Status|Randomizes memory addresses to block buffer overflows."
-        "kernel.kptr_restrict=2|Kernel Pointer|Hides kernel addresses from unprivileged users."
-        "kernel.perf_event_paranoid=3|Perf Events|Limits performance counter access (mitigates side-channels)."
-        "kernel.unprivileged_bpf_disabled=1|Unpriv BPF|Hardens against BPF-based kernel exploits."
-        "kernel.yama.ptrace_scope=1|Ptrace Scope|Restricts process debugging/inspection (prevents scraping)."
+        "net.ipv4.tcp_syncookies=1|TCP SYN Cookies|Protects against SYN flood (DDoS)."
+        "kernel.randomize_va_space=2|ASLR Status|Randomizes memory addresses."
+        "kernel.kptr_restrict=2|Kernel Pointer|Hides kernel addresses from users."
+        "kernel.perf_event_paranoid=3|Perf Events|Limits performance counter access."
+        "kernel.unprivileged_bpf_disabled=1|Unpriv BPF|Hardens against BPF kernel exploits."
+        "kernel.yama.ptrace_scope=1|Ptrace Scope|Restricts process inspection/scraping."
     )
 
     for c in "${checks[@]}"; do
@@ -299,14 +299,14 @@ check_sysctl() {
 }
 
 print_summary() {
-    echo -e "\n${BOLD}${BLUE}╔═════════════════════════════════════════════════════════════════════════════════════════╗${NC}"
-    echo -e "${BOLD}${BLUE}║                            WORKSTATION SECURITY AUDIT SUMMARY                           ║${NC}"
-    echo -e "${BOLD}${BLUE}╠═════════════════════════════════════════════════════════════════════════════════════════╣${NC}"
-    printf "${BOLD}${BLUE}║${NC} %-87s ${BOLD}${BLUE}║${NC}\n" " Total Checks: $TOTAL_CHECKS"
-    printf "${BOLD}${BLUE}║${NC} %b%-87s%b ${BOLD}${BLUE}║${NC}\n" "$GREEN" " Passed:       $PASSED_CHECKS" "$NC"
-    printf "${BOLD}${BLUE}║${NC} %b%-87s%b ${BOLD}${BLUE}║${NC}\n" "$RED" " Failed:       $FAILED_CHECKS" "$NC"
-    printf "${BOLD}${BLUE}║${NC} %b%-87s%b ${BOLD}${BLUE}║${NC}\n" "$YELLOW" " Warnings:     $WARNED_CHECKS" "$NC"
-    echo -e "${BOLD}${BLUE}╚═════════════════════════════════════════════════════════════════════════════════════════╝${NC}"
+    echo -e "\n${BOLD}${BLUE}╔═══════════════════════════════════════════════════════════════════════════════════════════════════════╗${NC}"
+    echo -e "${BOLD}${BLUE}║                                   WORKSTATION SECURITY AUDIT SUMMARY                                  ║${NC}"
+    echo -e "${BOLD}${BLUE}╠═══════════════════════════════════════════════════════════════════════════════════════════════════════╣${NC}"
+    printf "${BOLD}${BLUE}║${NC} %-101s ${BOLD}${BLUE}║${NC}\n" " Total Checks: $TOTAL_CHECKS"
+    printf "${BOLD}${BLUE}║${NC} %b%-101s%b ${BOLD}${BLUE}║${NC}\n" "$GREEN" " Passed:       $PASSED_CHECKS" "$NC"
+    printf "${BOLD}${BLUE}║${NC} %b%-101s%b ${BOLD}${BLUE}║${NC}\n" "$RED" " Failed:       $FAILED_CHECKS" "$NC"
+    printf "${BOLD}${BLUE}║${NC} %b%-101s%b ${BOLD}${BLUE}║${NC}\n" "$YELLOW" " Warnings:     $WARNED_CHECKS" "$NC"
+    echo -e "${BOLD}${BLUE}╚═══════════════════════════════════════════════════════════════════════════════════════════════════════╝${NC}"
     
     if [ "$FAILED_CHECKS" -gt 0 ]; then
         echo -e "\n${RED}${BOLD}ATTENTION:${NC} Critical security issues found on this workstation."

@@ -100,15 +100,15 @@ EOF
     if confirm_step "SSH Configurations (Client & Server)"; then
         print_message "Hardening SSH client configuration..."
         if [ -f /etc/ssh/ssh_config ]; then
-            sudo sed -i 's/^#\?HashKnownHosts.*/HashKnownHosts yes/' /etc/ssh/ssh_config
-            sudo sed -i 's/^#\?StrictHostKeyChecking.*/StrictHostKeyChecking ask/' /etc/ssh/ssh_config
+            sudo sed -i 's/^\s*#\?HashKnownHosts.*/    HashKnownHosts yes/' /etc/ssh/ssh_config
+            sudo sed -i 's/^\s*#\?StrictHostKeyChecking.*/    StrictHostKeyChecking ask/' /etc/ssh/ssh_config
         fi
         
         # Also harden SSH server if it exists
         if [ -f /etc/ssh/sshd_config ]; then
             print_message "Hardening SSH server (sshd) configuration..."
-            sudo sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin no/' /etc/ssh/sshd_config
-            sudo sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication no/' /etc/ssh/sshd_config
+            sudo sed -i 's/^\s*#\?PermitRootLogin.*/PermitRootLogin no/' /etc/ssh/sshd_config
+            sudo sed -i 's/^\s*#\?PasswordAuthentication.*/PasswordAuthentication no/' /etc/ssh/sshd_config
             sudo systemctl restart ssh 2>/dev/null || true
         fi
     fi

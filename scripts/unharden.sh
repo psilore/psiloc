@@ -83,14 +83,14 @@ revert_hardening() {
     if confirm_step "Restore SSH Configs to defaults"; then
         print_message "Restoring SSH client configuration to defaults..."
         if [ -f /etc/ssh/ssh_config ]; then
-            sudo sed -i 's/^HashKnownHosts.*/#   HashKnownHosts yes/' /etc/ssh/ssh_config
-            sudo sed -i 's/^StrictHostKeyChecking.*/#   StrictHostKeyChecking ask/' /etc/ssh/ssh_config
+            sudo sed -i 's/^\s*HashKnownHosts.*/#   HashKnownHosts yes/' /etc/ssh/ssh_config
+            sudo sed -i 's/^\s*StrictHostKeyChecking.*/#   StrictHostKeyChecking ask/' /etc/ssh/ssh_config
         fi
         
         if [ -f /etc/ssh/sshd_config ]; then
             print_message "Restoring SSH server (sshd) defaults..."
-            sudo sed -i 's/^PermitRootLogin.*/#PermitRootLogin prohibit-password/' /etc/ssh/sshd_config
-            sudo sed -i 's/^PasswordAuthentication.*/#PasswordAuthentication yes/' /etc/ssh/sshd_config
+            sudo sed -i 's/^\s*PermitRootLogin.*/#PermitRootLogin prohibit-password/' /etc/ssh/sshd_config
+            sudo sed -i 's/^\s*PasswordAuthentication.*/#PasswordAuthentication yes/' /etc/ssh/sshd_config
             sudo systemctl restart ssh 2>/dev/null || true
         fi
     fi
