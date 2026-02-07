@@ -300,6 +300,15 @@ refresh_shell() {
     fi
 }
 
+# Handle CLI arguments for non-interactive use
+if [[ "$1" == "--harden" ]]; then
+    "$SCRIPT_DIR/harden.sh" --yes
+    exit 0
+elif [[ "$1" == "--audit" ]]; then
+    "$SCRIPT_DIR/audit.sh"
+    exit 0
+fi
+
 # Main menu
 show_menu() {
     clear

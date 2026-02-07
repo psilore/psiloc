@@ -12,6 +12,9 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 BOLD='\033[1m'
 NC='\033[0m' # No Color
+MAGENTA='\033[1;35m'
+CYAN='\033[1;36m'
+WHITE='\033[1;37m'
 
 # Ensure sbin is in PATH for sysctl and other tools
 export PATH=$PATH:/sbin:/usr/sbin:/usr/local/sbin
@@ -314,22 +317,34 @@ check_sysctl() {
 }
 
 print_summary() {
-    echo -e "\n${BOLD}${BLUE}╔═══════════════════════════════════════════════════════════════════════════════════════════════════════╗${NC}"
-    echo -e "${BOLD}${BLUE}║                                   WORKSTATION SECURITY AUDIT SUMMARY                                  ║${NC}"
-    echo -e "${BOLD}${BLUE}╠═══════════════════════════════════════════════════════════════════════════════════════════════════════╣${NC}"
-    printf "${BOLD}${BLUE}║${NC} %-101s ${BOLD}${BLUE}║${NC}\n" " Total Checks: $TOTAL_CHECKS"
-    printf "${BOLD}${BLUE}║${NC} %b%-101s%b ${BOLD}${BLUE}║${NC}\n" "$GREEN" " Passed:       $PASSED_CHECKS" "$NC"
-    printf "${BOLD}${BLUE}║${NC} %b%-101s%b ${BOLD}${BLUE}║${NC}\n" "$RED" " Failed:       $FAILED_CHECKS" "$NC"
-    printf "${BOLD}${BLUE}║${NC} %b%-101s%b ${BOLD}${BLUE}║${NC}\n" "$YELLOW" " Warnings:     $WARNED_CHECKS" "$NC"
-    echo -e "${BOLD}${BLUE}╚═══════════════════════════════════════════════════════════════════════════════════════════════════════╝${NC}"
+    local total=$TOTAL_CHECKS
+    local passed=$PASSED_CHECKS
+    local percent=0
+    if [ "$total" -gt 0 ]; then
+        percent=$(( (passed * 100) / total ))
+    fi
+
+    # Create a progress bar (20 characters wide)
+    local bar_width=20
+    local filled=$(( (percent * bar_width) / 100 ))
+    local empty=$(( bar_width - filled ))
+    local bar=""
+    for ((i=0; i<filled; i++)); do bar+="█"; done
+    for ((i=0; i<empty; i++)); do bar+="░"; done
+
+    echo -e "\n  ${MAGENTA}⚡ ${BOLD}SECURITY SCORE${NC}  ${CYAN}[${bar}]${NC} ${WHITE}${percent}%${NC}"
+    echo -e "  ${BLUE}─────────────────────────────────────────────────────────────${NC}"
+    printf "  ${GREEN}✔ PASSED   ${NC} %-3s  ${RED}✘ FAILED   ${NC} %-3s  ${YELLOW}⚠ WARNINGS ${NC} %-3s\n" "$PASSED_CHECKS" "$FAILED_CHECKS" "$WARNED_CHECKS"
+    echo -e "  ${BLUE}─────────────────────────────────────────────────────────────${NC}"
+    echo -e "  ${WHITE}${BOLD}Source:${NC} ${BLUE}Psiloc Hardening Profile (inspired by CIS & NIST)${NC}"
     
-    if [ "$FAILED_CHECKS" -eq 0 ] && [ "$WARNED_CHECKS" -eq 0 ]; then
-        echo -e "\n${GREEN}${BOLD}SECURITY STATUS:${NC} Excellent. Your workstation follows the recommended hardening profile."
+    if [ "$PASSED_CHECKS" -eq "$TOTAL_CHECKS" ] && [ "$TOTAL_CHECKS" -gt 0 ]; then
+        echo -e "\n  ${GREEN}${BOLD}SECURITY STATUS:${NC} Excellent. Your workstation follows the recommended hardening profile."
     elif [ "$FAILED_CHECKS" -eq 0 ]; then
-        echo -e "\n${YELLOW}${BOLD}SECURITY STATUS:${NC} Good. Consider reviewing the warnings above to further harden your system."
+        echo -e "\n  ${YELLOW}${BOLD}SECURITY STATUS:${NC} Good. Consider reviewing the warnings above to further harden your system."
     else
-        echo -e "\n${BLUE}${BOLD}SECURITY STATUS:${NC} Assessment complete. Suggested improvements have been identified to better protect your system."
-        echo -e "You can use the 'harden.sh' script to address some of these findings."
+        echo -e "\n  ${BLUE}${BOLD}SECURITY STATUS:${NC} Assessment complete. Suggested improvements have been identified."
+        echo -e "  You can use the 'harden.sh' script to address some of these findings."
     fi
 }
 

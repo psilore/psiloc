@@ -11,6 +11,15 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
+# Check for non-interactive flag
+NON_INTERACTIVE=false
+for arg in "$@"; do
+    if [[ "$arg" == "--yes" || "$arg" == "-y" ]]; then
+        NON_INTERACTIVE=true
+        break
+    fi
+done
+
 # Function to print colored messages
 print_message() {
     echo -e "${GREEN}[INFO]${NC} $1"
@@ -30,6 +39,9 @@ print_success() {
 
 # Function to ask for confirmation
 confirm_step() {
+    if [[ "$NON_INTERACTIVE" == "true" ]]; then
+        return 0
+    fi
     local step_name="$1"
     echo -e "\n${YELLOW}[?]${NC} Apply $step_name?"
     read -p "    Confirm action [y/N]: " response
@@ -54,6 +66,37 @@ setup_firewall() {
     # Only allow SSH if specifically requested, or keep it limited
     sudo ufw limit ssh
     sudo ufw --force enable
+}
+
+harden_bluetooth() {
+    if confirm_step "Disable & Mask Bluetooth Service"; then
+        print_message "Disabling and masking Bluetooth service..."
+        sudo systemctl disable --now bluetooth 2>/dev/null
+        sudo systemctl mask bluetooth 2>/dev/null
+    fi
+}
+
+harden_gnome_security() {
+    if command -v gsettings >/dev/null 2>&1; then
+        if confirm_step "GNOME Screen Lock (Enabled + 10m Delay)"; then
+            print_message "Setting GNOME idle delay to 10 minutes..."
+            gsettings set org.gnome.desktop.session idle-delay 600
+            print_message "Enabling GNOME screen lock..."
+            gsettings set org.gnome.desktop.screensaver lock-enabled true
+        fi
+    fi
+}
+
+harden_directory_permissions() {
+    if confirm_step "Secure Home & SSH Directory Permissions"; then
+        print_message "Securing home directory ($HOME) to 750..."
+        chmod 750 "$HOME"
+        if [ -d "$HOME/.ssh" ]; then
+            print_message "Securing .ssh directory to 700..."
+            chmod 700 "$HOME/.ssh"
+            [ -f "$HOME/.ssh/config" ] && chmod 600 "$HOME/.ssh/config"
+        fi
+    fi
 }
 
 apply_security_hardening() {
@@ -143,6 +186,11 @@ EOF
 
     # 8. Setup Firewall
     setup_firewall
+
+    # 9. Extra workstation gaps
+    harden_bluetooth
+    harden_gnome_security
+    harden_directory_permissions
 
     print_success "Workstation security hardening applied successfully!"
 }
