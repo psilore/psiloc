@@ -66,9 +66,9 @@ background-opacity = 0.90
 cursor-color = f8f8f2
 cursor-text = 272822
 
-# Selection - slightly lighter than background
-selection-background = 2a3348
-selection-foreground = f8f8f2
+# Selection
+selection-background = 214329
+selection-foreground = 57679e
 
 # Palette Colors (16 colors)
 # Black
