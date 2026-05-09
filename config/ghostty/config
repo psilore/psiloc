@@ -51,7 +51,7 @@
 
 # Font
 font-family = "SauceCodePro Nerd Font"
-font-size = 14
+font-size = 13
 
 # Colors - Dracula Theme
 background = 0e111b
@@ -105,3 +105,5 @@ window-padding-y = 8
 # Terminal
 scrollback-limit = 10000
 
+# Hide top bar
+window-decoration = false
