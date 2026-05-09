@@ -21,9 +21,13 @@ psiloc/
 │   ├── shell/zsh/         # Zsh configuration
 │   └── git/               # Git configuration
 ├── scripts/
-│   ├── setup.sh            # Interactive setup menu (21 options)
-│   └── backup.sh           # Configuration backup menu (10 options)
+│   ├── setup.sh            # Interactive setup menu (23 options)
+│   ├── backup.sh           # Configuration backup menu (10 options)
+│   ├── audit.sh            # Workstation security audit
+│   ├── harden.sh           # Interactive security hardening
+│   └── unharden.sh         # Interactive hardening reversal
 └── docs/                   # Documentation and images
+    └── SECURITY.md         # Security audit & hardening guide
 ```
 
 ## Quick Start
@@ -40,3 +44,11 @@ cd psiloc/scripts
 # Backup configurations
 ./backup.sh
 ```
+
+## Security
+
+Psiloc provides built-in tools for auditing and hardening your Debian-based workstation. For detailed information on these features, see the [Security Guide](docs/SECURITY.md).
+
+- **Audit**: Run `./scripts/audit.sh` (may prompt for sudo) to see your current security posture.
+- **Harden**: Run `./scripts/harden.sh` for an interactive security setup.
+- **Revert**: Run `./scripts/unharden.sh` to safely undo security changes.

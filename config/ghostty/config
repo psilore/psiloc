@@ -114,6 +114,7 @@ fullscreen = true
 # Terminal
 scrollback-limit = 10000
 
+<<<<<<< HEAD
 # Shell Integration
 # Enable automatic shell integration detection
 shell-integration = detect
@@ -122,3 +123,7 @@ shell-integration = detect
 # sudo: Preserves terminfo when using sudo
 # ssh-terminfo disabled temporarily while troubleshooting connection issues
 shell-integration-features = sudo,ssh-env
+=======
+# Hide top bar
+window-decoration = false
+>>>>>>> 54d2b5a5c9b6785a3608e5f45e09b09ca2877c6d

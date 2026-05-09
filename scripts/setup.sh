@@ -455,13 +455,6 @@ uninstall_ghostty() {
     fi
 }
 
-setup_firewall() {
-    print_message "Setting up UFW firewall..."
-    sudo ufw default deny incoming
-    sudo ufw default allow outgoing
-    sudo ufw limit ssh
-    sudo ufw enable
-}
 
 refresh_shell() {
     print_message "Refreshing shell configuration..."
@@ -477,6 +470,15 @@ refresh_shell() {
         exec $SHELL
     fi
 }
+
+# Handle CLI arguments for non-interactive use
+if [[ "$1" == "--harden" ]]; then
+    "$SCRIPT_DIR/harden.sh" --yes
+    exit 0
+elif [[ "$1" == "--audit" ]]; then
+    "$SCRIPT_DIR/audit.sh"
+    exit 0
+fi
 
 # Main menu
 show_menu() {
@@ -511,11 +513,20 @@ show_menu() {
     echo "  15) Install Nerd Fonts"
     echo "  16) Setup GNOME Terminal profile"
     echo "  17) Install Ghostty terminal"
+<<<<<<< HEAD
     echo "  18) Uninstall Ghostty terminal"
     echo "  19) Set Zsh as default shell"
     echo "  20) Setup UFW firewall"
     echo "  21) Install ALL (runs all options)"
     echo "  22) Refresh shell (reload configuration)"
+=======
+    echo "  18) Set Zsh as default shell"
+    echo "  19) Workstation Security Hardening & Firewall (harden.sh)"
+    echo "  20) Run Local Security Audit (audit.sh)"
+    echo "  21) Install ALL (runs all options)"
+    echo "  22) Refresh shell (reload configuration)"
+    echo "  23) Revert Security Hardening (unharden.sh)"
+>>>>>>> 54d2b5a5c9b6785a3608e5f45e09b09ca2877c6d
     echo "  0)  Exit"
     echo ""
     echo -ne "${YELLOW}Enter your choice [0-22]:${NC} "
@@ -544,9 +555,15 @@ while true; do
         15) install_nerd_fonts ;;
         16) setup_gnome_terminal ;;
         17) install_ghostty ;;
+<<<<<<< HEAD
         18) uninstall_ghostty ;;
         19) setup_zsh_default ;;
         20) setup_firewall ;;
+=======
+        18) setup_zsh_default ;;
+        19) "$SCRIPT_DIR/harden.sh" ;;
+        20) "$SCRIPT_DIR/audit.sh" ;;
+>>>>>>> 54d2b5a5c9b6785a3608e5f45e09b09ca2877c6d
         21)
             print_message "Installing everything..."
             sudo apt-get update
@@ -568,10 +585,14 @@ while true; do
             setup_gnome_terminal
             install_ghostty
             setup_zsh_default
-            setup_firewall
+            "$SCRIPT_DIR/harden.sh"
             print_message "All installations complete!"
             ;;
         22) refresh_shell ;;
+<<<<<<< HEAD
+=======
+        23) "$SCRIPT_DIR/unharden.sh" ;;
+>>>>>>> 54d2b5a5c9b6785a3608e5f45e09b09ca2877c6d
         0)
             print_message "Exiting setup script. Goodbye!"
             exit 0
