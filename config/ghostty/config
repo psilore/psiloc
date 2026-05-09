@@ -49,21 +49,26 @@
 # Ghostty Configuration - Dracula Theme
 # Converted from GNOME Terminal dracula.dconf
 
+# window
+window-width = 80
+window-height = 40
+
 # Font
 font-family = "SauceCodePro Nerd Font"
-font-size = 14
+font-size = 13
 
 # Colors - Dracula Theme
 background = 0e111b
 foreground = f8f8f2
+background-opacity = 0.90
 
 # Cursor
 cursor-color = f8f8f2
 cursor-text = 272822
 
-# Selection
-selection-background = 214329
-selection-foreground = 57679e
+# Selection - slightly lighter than background
+selection-background = 2a3348
+selection-foreground = f8f8f2
 
 # Palette Colors (16 colors)
 # Black
@@ -99,9 +104,21 @@ palette = 7=#f8f8f2
 palette = 15=#ffffff
 
 # Window
-window-padding-x = 8
-window-padding-y = 8
+window-padding-x = 16
+window-padding-y = 16
+window-theme = "ghostty"
+
+# Start new windows in fullscreen
+fullscreen = true
 
 # Terminal
 scrollback-limit = 10000
 
+# Shell Integration
+# Enable automatic shell integration detection
+shell-integration = detect
+
+# ssh-env: Automatically converts TERM for remote hosts
+# sudo: Preserves terminfo when using sudo
+# ssh-terminfo disabled temporarily while troubleshooting connection issues
+shell-integration-features = sudo,ssh-env

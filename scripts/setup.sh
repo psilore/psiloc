@@ -153,7 +153,7 @@ install_zsh_plugins() {
         git clone --depth 1 -- https://github.com/Aloxaf/fzf-tab "${ZSH_CUSTOM:-"$HOME"/.oh-my-zsh/custom}"/plugins/fzf-tab
         git clone --depth 1 -- https://github.com/zsh-users/zsh-autosuggestions "${ZSH_CUSTOM:-"$HOME"/.oh-my-zsh/custom}"/plugins/zsh-autosuggestions
         git clone --depth 1 -- https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM:-"$HOME"/.oh-my-zsh/custom}"/plugins/zsh-syntax-highlighting
-        git clone --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git "$ZSH_CUSTOM"/plugins/zsh-autocomplete
+        git clone --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git "${ZSH_CUSTOM:-"$HOME"/.oh-my-zsh/custom}"/plugins/zsh-autocomplete
     else
         print_error "Oh-My-Zsh not installed. Please install it first."
     fi
@@ -260,27 +260,198 @@ setup_zsh_default() {
 install_ghostty() {
     print_message "Installing Ghostty terminal..."
     
-    # Download and store the repository signing key (dearmored)
-    print_message "Adding Ghostty repository GPG key..."
-    sudo curl -fsSL https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc \
-        | sudo gpg --dearmor -o /usr/share/keyrings/debian.griffo.io.gpg
-    
-    # Add the repository, referencing the keyring using 'signed-by'
-    print_message "Adding Ghostty repository..."
-    echo "deb [signed-by=/usr/share/keyrings/debian.griffo.io.gpg] https://debian.griffo.io/apt $(lsb_release -sc) main" \
-        | sudo tee /etc/apt/sources.list.d/debian.griffo.io.list > /dev/null
-    
-    # Update and install
-    print_message "Installing Ghostty..."
-    sudo apt-get update
-    sudo apt-get install ghostty -y
-    
-    # Verify installation
+    # Check if already installed
     if command -v ghostty >/dev/null 2>&1; then
-        print_message "Ghostty installed successfully: $(ghostty --version 2>&1 | head -n1)"
+        print_message "Ghostty is already installed: $(ghostty --version 2>&1 | head -n1)"
+        return 0
+    fi
+    
+    # Show installation options
+    echo ""
+    echo "Choose installation method:"
+    echo "  1) Snap (recommended - easiest, official)"
+    echo "  2) Ubuntu .deb package (community-maintained)"
+    echo "  3) AppImage (universal, community-maintained)"
+    echo "  0) Cancel"
+    echo ""
+    echo -ne "${YELLOW}Enter your choice [0-3]:${NC} "
+    read -r install_choice
+    
+    case $install_choice in
+        1)
+            print_message "Installing Ghostty via Snap..."
+            if ! command -v snap >/dev/null 2>&1; then
+                print_message "Installing snapd..."
+                sudo apt-get update
+                sudo apt-get install -y snapd
+            fi
+            sudo snap install ghostty --classic
+            
+            if command -v ghostty >/dev/null 2>&1; then
+                print_success "Ghostty installed successfully via Snap: $(ghostty --version 2>&1 | head -n1)"
+            else
+                print_error "Failed to install Ghostty via Snap"
+                return 1
+            fi
+            ;;
+            
+        2)
+            print_message "Installing Ghostty via Ubuntu .deb package..."
+            print_warning "This is a community-maintained package"
+            
+            # Run the community installation script
+            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/mkasberg/ghostty-ubuntu/HEAD/install.sh)"
+            
+            if command -v ghostty >/dev/null 2>&1; then
+                print_success "Ghostty installed successfully: $(ghostty --version 2>&1 | head -n1)"
+            else
+                print_error "Failed to install Ghostty via .deb package"
+                return 1
+            fi
+            ;;
+            
+        3)
+            print_message "Installing Ghostty via AppImage..."
+            print_warning "This is a community-maintained AppImage"
+            
+            # Create directory for AppImages
+            mkdir -p "$HOME/.local/bin"
+            
+            # Detect architecture
+            ARCH=$(uname -m)
+            if [ "$ARCH" = "x86_64" ]; then
+                ARCH="x86_64"
+            elif [ "$ARCH" = "aarch64" ]; then
+                ARCH="aarch64"
+            else
+                print_error "Unsupported architecture: $ARCH"
+                return 1
+            fi
+            
+            # Get latest release URL
+            print_message "Downloading latest Ghostty AppImage..."
+            LATEST_URL=$(curl -s https://api.github.com/repos/pkgforge-dev/ghostty-appimage/releases/latest | \
+                grep "browser_download_url.*${ARCH}.appimage\"" | \
+                cut -d '"' -f 4)
+            
+            if [ -z "$LATEST_URL" ]; then
+                print_error "Failed to find AppImage download URL"
+                return 1
+            fi
+            
+            wget -O "$HOME/.local/bin/ghostty.appimage" "$LATEST_URL"
+            chmod +x "$HOME/.local/bin/ghostty.appimage"
+            
+            # Create wrapper script
+            cat > "$HOME/.local/bin/ghostty" <<'EOF'
+#!/bin/bash
+exec "$HOME/.local/bin/ghostty.appimage" "$@"
+EOF
+            chmod +x "$HOME/.local/bin/ghostty"
+            
+            # Create desktop file
+            mkdir -p "$HOME/.local/share/applications"
+            cat > "$HOME/.local/share/applications/ghostty.desktop" <<EOF
+[Desktop Entry]
+Type=Application
+Name=Ghostty
+Comment=Fast terminal emulator
+Exec=$HOME/.local/bin/ghostty
+Icon=utilities-terminal
+Terminal=false
+Categories=System;TerminalEmulator;
+EOF
+            
+            if [ -f "$HOME/.local/bin/ghostty" ]; then
+                print_success "Ghostty AppImage installed to ~/.local/bin/ghostty"
+                print_message "Make sure ~/.local/bin is in your PATH"
+            else
+                print_error "Failed to install Ghostty AppImage"
+                return 1
+            fi
+            ;;
+            
+        0)
+            print_message "Installation cancelled"
+            return 0
+            ;;
+            
+        *)
+            print_error "Invalid option"
+            return 1
+            ;;
+    esac
+}
+
+uninstall_ghostty() {
+    print_message "Uninstalling Ghostty terminal..."
+    
+    # Check if Ghostty is installed
+    if ! command -v ghostty >/dev/null 2>&1 && ! snap list ghostty >/dev/null 2>&1 && [ ! -f "$HOME/.local/bin/ghostty" ]; then
+        print_warning "Ghostty is not installed"
+        return 0
+    fi
+    
+    # Detect installation method and uninstall accordingly
+    if snap list ghostty >/dev/null 2>&1; then
+        print_message "Detected Snap installation, removing..."
+        sudo snap remove ghostty
+        print_success "Ghostty Snap removed"
+    fi
+    
+    if dpkg -l | grep -q ghostty 2>/dev/null; then
+        print_message "Detected .deb package installation, removing..."
+        sudo apt-get remove -y ghostty
+        sudo apt-get autoremove -y
+        print_success "Ghostty .deb package removed"
+    fi
+    
+    if [ -f "$HOME/.local/bin/ghostty.appimage" ]; then
+        print_message "Detected AppImage installation, removing..."
+        rm -f "$HOME/.local/bin/ghostty.appimage"
+        rm -f "$HOME/.local/bin/ghostty"
+        print_success "Ghostty AppImage removed"
+    fi
+    
+    # Remove desktop file
+    if [ -f "$HOME/.local/share/applications/ghostty.desktop" ]; then
+        print_message "Removing desktop file..."
+        rm -f "$HOME/.local/share/applications/ghostty.desktop"
+    fi
+    
+    # Remove source directory (if exists from old build attempts)
+    if [ -d "$HOME/.local/src/ghostty" ]; then
+        print_message "Removing source directory..."
+        rm -rf "$HOME/.local/src/ghostty"
+    fi
+    
+    # Remove Zig if installed (from old build method)
+    zig_dirs=()
+    if command -v zig >/dev/null 2>&1; then
+        for d in /opt/zig-linux-x86_64-*; do
+            [ -d "$d" ] && zig_dirs+=("$d")
+        done
+        if [ "${#zig_dirs[@]}" -gt 0 ]; then
+            echo -ne "${YELLOW}Remove Zig compiler (from previous build attempt)? (y/N):${NC} "
+            read -r remove_zig
+            if [[ "$remove_zig" =~ ^[Yy]$ ]]; then
+                print_message "Removing Zig compiler..."
+                sudo rm -f /usr/local/bin/zig
+                for d in "${zig_dirs[@]}"; do
+                    sudo rm -rf "$d"
+                done
+                print_success "Zig removed"
+            else
+                print_message "Keeping Zig compiler"
+            fi
+        fi
+    fi
+    
+    # Verify removal
+    if ! command -v ghostty >/dev/null 2>&1; then
+        print_success "Ghostty uninstalled successfully"
     else
-        print_error "Failed to install Ghostty"
-        return 1
+        print_warning "Ghostty command still found, manual cleanup may be needed"
     fi
 }
 
@@ -340,13 +511,14 @@ show_menu() {
     echo "  15) Install Nerd Fonts"
     echo "  16) Setup GNOME Terminal profile"
     echo "  17) Install Ghostty terminal"
-    echo "  18) Set Zsh as default shell"
-    echo "  19) Setup UFW firewall"
-    echo "  20) Install ALL (runs all options)"
-    echo "  21) Refresh shell (reload configuration)"
+    echo "  18) Uninstall Ghostty terminal"
+    echo "  19) Set Zsh as default shell"
+    echo "  20) Setup UFW firewall"
+    echo "  21) Install ALL (runs all options)"
+    echo "  22) Refresh shell (reload configuration)"
     echo "  0)  Exit"
     echo ""
-    echo -ne "${YELLOW}Enter your choice [0-21]:${NC} "
+    echo -ne "${YELLOW}Enter your choice [0-22]:${NC} "
 }
 
 # Main loop
@@ -372,9 +544,10 @@ while true; do
         15) install_nerd_fonts ;;
         16) setup_gnome_terminal ;;
         17) install_ghostty ;;
-        18) setup_zsh_default ;;
-        19) setup_firewall ;;
-        20)
+        18) uninstall_ghostty ;;
+        19) setup_zsh_default ;;
+        20) setup_firewall ;;
+        21)
             print_message "Installing everything..."
             sudo apt-get update
             install_required_packages
@@ -398,7 +571,7 @@ while true; do
             setup_firewall
             print_message "All installations complete!"
             ;;
-        21) refresh_shell ;;
+        22) refresh_shell ;;
         0)
             print_message "Exiting setup script. Goodbye!"
             exit 0

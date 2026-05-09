@@ -112,6 +112,17 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias prime-run='__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia'
 
+# Custom aliases
+# Note: sudo alias removed to allow Ghostty shell-integration sudo feature to work
+alias ll='ls -lah'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias update='sudo apt update && sudo apt upgrade -y'
+alias sshconfig='nano ~/.ssh/config'
+alias zshconfig='nano ~/.zshrc'
+alias reload='source ~/.zshrc'
+alias fix-terminfo='infocmp -x xterm-ghostty | sudo TERM=xterm-256color tic -x -o /usr/share/terminfo -'
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
