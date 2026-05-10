@@ -42,7 +42,7 @@ jobs:
     name: Deploy to Development Environment
     needs: security-and-build
     # Only deploy on merge/push to main. Skip if this is a Release Please PR being merged.
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && !startsWith(github.event.head_commit.message, 'chore(main): release')
+    if: "${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && !startsWith(github.event.head_commit.message, 'chore(main): release') }}"
     runs-on: ubuntu-latest
     environment: development
     steps:
