@@ -10,7 +10,7 @@ Personal configuration repository containing dotfiles, a Go-based setup automati
 
 ## Structure
 
-````bash
+```bash
 psiloc/
 ├── config/                # Configuration files for various applications
 │   ├── vscode/            # VS Code settings and extensions
@@ -51,9 +51,6 @@ cd src
 go build -o ../setup-client main.go
 cd ..
 
-# Backup configurations
-./backup.sh
-````
 # Run interactive setup
 ./setup-client
 ```
@@ -61,6 +58,7 @@ cd ..
 ### Features of `setup-client`
 
 The Go application provides a robust menu with options to:
+
 - Install necessary packages, tools, and environments (Docker, Terraform, Neovim, VS Code, Zsh, etc.)
 - Set up automated cron backup jobs via `backup.sh`
 - Perform local security audits and workstation hardening (calling `scripts/audit.sh`, `scripts/harden.sh`, and `scripts/unharden.sh`)
