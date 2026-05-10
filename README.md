@@ -10,7 +10,7 @@ Personal configuration repository containing dotfiles, a Go-based setup automati
 
 ## Structure
 
-```bash
+````bash
 psiloc/
 ├── config/                # Configuration files for various applications
 │   ├── vscode/            # VS Code settings and extensions
@@ -51,6 +51,9 @@ cd src
 go build -o ../setup-client main.go
 cd ..
 
+# Backup configurations
+./backup.sh
+````
 # Run interactive setup
 ./setup-client
 ```
@@ -69,3 +72,7 @@ Psiloc provides built-in tools for auditing and hardening your Debian-based work
 - **Audit**: Select the audit option in `setup-client` or run `./scripts/audit.sh` (may prompt for sudo) to see your current security posture.
 - **Harden**: Select the harden option in `setup-client` or run `./scripts/harden.sh` for an interactive security setup.
 - **Revert**: Select the revert option in `setup-client` or run `./scripts/unharden.sh` to safely undo security changes.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
