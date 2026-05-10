@@ -1,0 +1,52 @@
+name: Release Please
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+    steps:
+      - uses: googleapis/release-please-action@v5
+        id: release
+        with:
+          release-type: simple
+
+  deploy-production:
+    name: Deploy to Production Environment
+    needs: release-please
+    if: ${{ needs.release-please.outputs.release_created }}
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ">=1.21.0"
+
+      - name: Build Application
+        run: |
+          cd src
+          go build -v -o ../setup-client main.go
+
+      - name: Deploy to Prod
+        run: echo "Deploying to Production Environment..."
+        # Replace this with your actual production deployment script
+
+      - name: Store Prod Deployment Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: setup-client-prod-deployed
+          path: setup-client
+          retention-days: 14

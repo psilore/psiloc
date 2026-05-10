@@ -27,8 +27,13 @@ psiloc/
 │   ├── harden.sh           # Interactive security hardening
 │   └── unharden.sh         # Interactive hardening reversal
 └── docs/                   # Documentation and images
-    └── SECURITY.md         # Security audit & hardening guide
-```
+    ├── SECURITY.md         # Security audit & hardening guide
+    └── CONTRIBUTING.md     # Guidelines for Conventional Commits
+
+## Contributing
+
+Please review our [Contributing Guidelines](docs/CONTRIBUTING.md) which requires the use of **Conventional Commits** to support our automated Semantic Release pipeline.
+
 
 ## Quick Start
 
