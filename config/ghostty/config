@@ -1,129 +1,49 @@
-# This is the configuration file for Ghostty.
-#
-# This template file has been automatically created at the following
-# path since Ghostty couldn't find any existing config files on your system:
-#
-#   /home/psiloc/.config/ghostty/config
-#
-# The template does not set any default options, since Ghostty ships
-# with sensible defaults for all options. Users should only need to set
-# options that they want to change from the default.
-#
-# Run `ghostty +show-config --default --docs` to view a list of
-# all available config options and their default values.
-#
-# Additionally, each config option is also explained in detail
-# on Ghostty's website, at https://ghostty.org/docs/config.
-#
-# Ghostty can reload the configuration while running by using the menu
-# options or the bound key (default: Command + Shift + comma on macOS and
-# Control + Shift + comma on other platforms). Not all config options can be
-# reloaded while running; some only apply to new windows and others may require
-# a full restart to take effect.
+# --- Font & Text ---
+# Using Departure Mono for that clinical Alien look
+#font-family = "Departure Mono"
+font-family = "Glass TTY VT220"
+font-size = 16
+font-thicken = true
 
-# Config syntax crash course
-# ==========================
-# # The config file consists of simple key-value pairs,
-# # separated by equals signs.
-# window-padding-x = 2
-#
-# # Spacing around the equals sign does not matter.
-# # All of these are identical:
-# key=value
-# key= value
-# key =value
-# key = value
-#
-# # Any line beginning with a # is a comment. It's not possible to put
-# # a comment after a config option, since it would be interpreted as a
-# # part of the value. For example, this will have a value of "#123abc":
-# background = #123abc
-#
-# # Empty values are used to reset config keys to default.
-# key =
-#
-# # Some config options have unique syntaxes for their value,
-# # which is explained in the docs for that config option.
-# # Just for example:
-# resize-overlay-duration = 4s 200ms
-# Ghostty Configuration - Dracula Theme
-# Converted from GNOME Terminal dracula.dconf
+# --- Theme Section ---
+theme = ENCOM
 
-# window
-window-width = 80
-window-height = 40
+# Custom Overrides (Must stay BELOW the theme line)
+palette = 2=#00e5ff
+palette = 10=#00e5ff
 
-# Font
-font-family = "SauceCodePro Nerd Font"
-font-size = 13
+# ADD THIS LINE: Define Color 4 as a deeper, darker cyan for folders
+palette = 4=#008b8b
 
-# Colors - Dracula Theme
-background = 0e111b
-foreground = f8f8f2
+# Red Error Fixes
+palette = 1=#ff0000
+palette = 9=#ff3333
+
+foreground = #00e5ff
+cursor-color = #00e5ff
+background = #000000
+
+# --- Window Look & Feel ---
+window-decoration = false
+window-padding-x = 20
+window-padding-y = 20
 background-opacity = 0.90
 
-# Cursor
-cursor-color = f8f8f2
-cursor-text = 272822
+# --- Cursor (MU/TH/UR Style) ---
+cursor-style = block
+cursor-style-blink = false
 
-# Selection
-selection-background = 214329
-selection-foreground = 57679e
-
-# Palette Colors (16 colors)
-# Black
-palette = 0=#0e111b
-palette = 8=#626ea4
-
-# Red
-palette = 1=#ff5555
-palette = 9=#ff6e6e
-
-# Green
-palette = 2=#50fa7b
-palette = 10=#69ff94
-
-# Yellow
-palette = 3=#f1fa8c
-palette = 11=#ffffa5
-
-# Blue
-palette = 4=#bd93f9
-palette = 12=#d6acff
-
-# Magenta
-palette = 5=#ff79c6
-palette = 13=#ff92df
-
-# Cyan
-palette = 6=#8be9fd
-palette = 14=#a4ffff
-
-# White
-palette = 7=#f8f8f2
-palette = 15=#ffffff
-
-# Window
-window-padding-x = 16
-window-padding-y = 16
-window-theme = "ghostty"
-
-# Start new windows in fullscreen
-fullscreen = true
-
-# Terminal
-scrollback-limit = 10000
-
-<<<<<<< HEAD
-# Shell Integration
-# Enable automatic shell integration detection
+# --- Shell Integration ---
+# This is the critical fix: we combine your features into ONE line
+# and include 'no-cursor' so Zsh doesn't break your block cursor.
 shell-integration = detect
+shell-integration-features = sudo,ssh-env,no-cursor
 
-# ssh-env: Automatically converts TERM for remote hosts
-# sudo: Preserves terminfo when using sudo
-# ssh-terminfo disabled temporarily while troubleshooting connection issues
-shell-integration-features = sudo,ssh-env
-=======
-# Hide top bar
-window-decoration = false
->>>>>>> 54d2b5a5c9b6785a3608e5f45e09b09ca2877c6d
+# --- Shaders (The Nostromo Screen) ---
+custom-shader = ~/.config/ghostty/shaders/tft.glsl
+custom-shader = ~/.config/ghostty/shaders/bettercrt.glsl
+custom-shader = ~/.config/ghostty/shaders/bloom.glsl
+custom-shader-animation = always
+
+# --- Performance & Misc ---
+scrollback-limit = 10000
