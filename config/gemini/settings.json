@@ -1,0 +1,37 @@
+{
+  "general": {
+    "selectedAuthType": "oauth-personal"
+  },
+  "security": {
+    "tool_use": {
+      "require_confirmation": true,
+      "request_timeout_ms": 15000
+    },
+    "auth": {
+      "selectedType": "oauth-personal"
+    }
+  },
+  "preferences": {
+    "model": "gemini-3.1-pro",
+    "temperature": 0.1
+  },
+  "devops_context": {
+    "system_instruction": "You are assisting with on-prem infrastructure. 1. ANSIBLE SAFETY: forks=1 and become=false are set in config. 2. Always append '--check --diff' to ansible-playbook commands. 3. Root: /home/ansible/",
+    "project_root": "/home/ansible/"
+  },
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/home/psiloc/gitlab/modelon/on-prem-ansible/",
+        "/home/psiloc/.ssh/"
+      ]
+    },
+    "fetch": {
+      "command": "mcp-server-fetch-typescript",
+      "args": []
+    }
+  }
+}
