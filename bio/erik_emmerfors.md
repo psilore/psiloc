@@ -1,7 +1,7 @@
 # Erik Emmerfors
 
 **SysOps | DevOps | AI Automation Engineer**  
-📍 Malmö, Sweden | ✉️ [psiloc@gmail.com](mailto:psiloc@gmail.com) | 🌐 [github.com/psiloc](https://github.com/psiloc)
+📍 Malmö, Sweden | ✉️ [psiloc@gmail.com](mailto:psiloc@gmail.com) | 🌐 [github.com/psilore](https://github.com/psilore)
 
 ---
 
