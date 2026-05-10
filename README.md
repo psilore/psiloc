@@ -1,4 +1,3 @@
-
 # Psiloc
 
 A dotfiles repository for Debian Trixie development environments with automated setup and backup scripts.
@@ -11,7 +10,7 @@ Personal configuration repository containing dotfiles, setup automation, and bac
 
 ## Structure
 
-```bash
+````bash
 psiloc/
 ├── config/                # Configuration files for various applications
 │   ├── vscode/            # VS Code settings and extensions
@@ -48,12 +47,16 @@ cd psiloc/scripts
 
 # Backup configurations
 ./backup.sh
-```
+````
 
 ## Security
 
 Psiloc provides built-in tools for auditing and hardening your Debian-based workstation. For detailed information on these features, see the [Security Guide](docs/SECURITY.md).
 
-- **Audit**: Run `./scripts/audit.sh` (may prompt for sudo) to see your current security posture.
-- **Harden**: Run `./scripts/harden.sh` for an interactive security setup.
-- **Revert**: Run `./scripts/unharden.sh` to safely undo security changes.
+- **Audit**: Select the audit option in `setup-client` or run `./scripts/audit.sh` (may prompt for sudo) to see your current security posture.
+- **Harden**: Select the harden option in `setup-client` or run `./scripts/harden.sh` for an interactive security setup.
+- **Revert**: Select the revert option in `setup-client` or run `./scripts/unharden.sh` to safely undo security changes.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
