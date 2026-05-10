@@ -1,5 +1,8 @@
 name: CI/CD Security and Deploy
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 on:
   push:
     branches:
@@ -20,6 +23,7 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: '>=1.21.0'
+          cache: false
 
       - name: Run Gosec Security Scanner
         uses: securego/gosec@master
