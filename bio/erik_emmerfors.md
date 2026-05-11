@@ -147,4 +147,4 @@ _Developer | Bash, Cron, Git_
 
 ---
 
-> _References, education and full project breakdown available upon request by either buy me coffee or pay $50 an undisclosed bank account._
+> _References, education and full project breakdown available upon request by either buy me coffee or pay $50 to an undisclosed bank account._
