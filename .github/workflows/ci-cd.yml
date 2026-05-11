@@ -1,5 +1,8 @@
 name: CI/CD Security and Deploy
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 on:
   push:
     branches:
@@ -8,18 +11,22 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+
 jobs:
   security-and-build:
     name: Security Scan and Build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
-          go-version: '>=1.21.0'
+          go-version: ">=1.26.1"
+          cache: false
 
       - name: Run Gosec Security Scanner
         uses: securego/gosec@master
@@ -32,7 +39,7 @@ jobs:
           go build -v -o ../setup-client main.go
 
       - name: Upload Build Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: setup-client-binary
           path: setup-client
@@ -47,7 +54,7 @@ jobs:
     environment: development
     steps:
       - name: Download Build Artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: setup-client-binary
 
@@ -56,7 +63,7 @@ jobs:
         # Replace this with your actual dev deployment script
 
       - name: Store Dev Deployment Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: setup-client-dev-deployed
           path: setup-client
