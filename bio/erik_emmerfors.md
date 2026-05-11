@@ -48,6 +48,10 @@ A versatile, hands-on Senior DevOps & AI Automation Consultant at Extrapreneur, 
 
 ### **Senior DevOps & Systems Consultant | Extrapreneur**
 
+> [!IMPORTANT]  
+> I am not allowed to give to much appraisal, I am going to that anyway!
+> Thank you @peter, @cecilia, @rickard and @agnes, I would not have found you, thank you for finding me
+
 _2022 – Present_
 
 > Lead Consultant architecting unified infrastructure suites and driving automation strategies for major Swedish industrial and retail clients.
