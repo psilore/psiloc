@@ -7,7 +7,7 @@
 
 ## 🚀 Professional Profile
 
-A versatile, hands-on Systems Operations (SysOps), Platform Engineering (DevOps), and AI Automation Engineer with extensive experience designing, securing, and scaling hybrid environments. Specializes in bridge-building between infrastructure stability and developer velocity through robust Infrastructure-as-Code (IaC) automation, secure secrets management, containerization, and self-hosted local Artificial Intelligence integrations. Passionate about automating repetitive tasks, building interactive CLI tools, and creating smart orchestration workflows.
+A versatile, hands-on Senior DevOps & AI Automation Consultant at Extrapreneur, specializing in the design, security, and scaling of hybrid environments. Erik bridges the gap between infrastructure stability and developer velocity through robust IaC automation, secure secrets management, and self-hosted AI integrations. He excels at navigating complex enterprise ecosystems (IKEA, Modelon) while maintaining an agile, consultant-driven approach to solving infrastructure bottlenecks.
 
 ---
 
@@ -28,61 +28,57 @@ A versatile, hands-on Systems Operations (SysOps), Platform Engineering (DevOps)
 </p>
 
 ### 💻 System Operations (SysOps)
-
-- **OS & Hardware Optimization**: In-depth administration of Debian/Ubuntu Linux platforms; experience optimizing hardware-specific features (e.g., hybrid graphics/Optimus, power management, and hardware acceleration on ThinkPad P15s Gen 1 architectures).
-- **Virtualization & Hypervisors**: Bare-metal cluster management and deployment using **Proxmox VE**, virtual machines (KVM), and lightweight Linux Containers (LXC).
-- **High-Availability Networking**: Implementing and configuring high-performance **Nginx** reverse proxies, secure SSL/TLS termination, HTTP method handling (e.g., POST/308 redirects), and secure VPN networking (Tailscale).
-- **Infrastructure Security**: Securing remote SSH connections utilizing **ControlMaster**, customized agent-forwarding configurations, and strict network boundary restrictions.
+* **OS & Hardware:** Advanced Debian/Ubuntu administration; hardware optimization for ThinkPad P15s (hybrid graphics/power management).
+* **Virtualization:** Bare-metal cluster management via **Proxmox VE**, KVM, and LXC.
+* **Networking:** High-performance **Nginx** reverse proxies, SSL/TLS termination, and zero-trust VPNs (**Tailscale**).
+* **Security:** Hardened SSH configurations (ControlMaster) and strict network boundary enforcement.
 
 ### ⚙️ Platform Engineering & DevOps
+* **Infrastructure as Code:** Enterprise-scale **Ansible** (FQCN standards, modular collections, and `ansible-lint` governance).
+* **Secrets Management:** Zero-plaintext workflows using **Ansible Vault**.
+* **Containerization:** Full lifecycle management via **Docker & Docker Compose**; volume isolation and health monitoring.
+* **CI/CD:** Automated backup pipelines for GitHub/GitLab and custom Python/Bash automation flows.
 
-- **Infrastructure as Code (IaC)**: Architecting enterprise Ansible architectures. Expert in transitioning flat architectures to official modular collections, developing reusable Ansible roles, managing complex dynamic inventories, and enforcing formatting guidelines via `ansible-lint`.
-- **Secrets Management**: Securing production inventories and deployments via **Ansible Vault** to guarantee zero plain-text passwords or credentials in repositories.
-- **Containerization**: Designing and hosting containerized applications utilizing **Docker** and **Docker Compose**, managing container lifecycles, local volumes, network isolation, and health monitoring (e.g., Patchmon, PostgreSQL setups).
-- **CI/CD & Repository Automation**: Implementing secure backups for GitHub/GitLab repositories onto off-site servers, cron automation pipelines, shell scripting (Bash, Python), and error notification flows.
-
-### 🧠 AI Engineering & Automation Orchestration
-
-- **Local LLM Infrastructure**: Deploying, optimizing, and scaling open-source large language models using **Ollama** in Docker/LXC, integrating hardware/GPU acceleration for local execution.
-- **Orchestration & Workflow Automation**: Designing autonomous agent workflows using **n8n**, connecting third-party APIs, triggers, databases, and local LLMs to automate business logic and system monitoring.
-- **Hybrid AI Models & Agents**: Developing pipelines that combine local execution via **Ollama** and cloud capabilities via **Google Gemini** to digest system logs, parse complex alerts, and interactively guide setup routines.
-
----
+### 🧠 AI Engineering & Automation
+* **Local LLM Infrastructure:** Scaling open-source models using **Ollama** with hardware/GPU acceleration.
+* **Workflow Orchestration:** Designing autonomous agents in **n8n** to bridge APIs, databases, and LLMs.
+* **Hybrid AI:** Architecting pipelines combining local execution (**Ollama**) with cloud power (**Google Gemini**) for log analysis and interactive system diagnostics.
 
 ## 💼 Highlighted Professional Experience
 
-### **Senior DevOps & Systems Engineer** | Modelon _(Inferred/Representative)_
+### **Senior DevOps & Systems Consultant | Extrapreneur**
 
-_Lund, Sweden (Remote / Hybrid) | 2026 - Present_
+_2022 – Present_
 
-- **Ansible Modernization**: Led the refactoring of a major on-premise Ansible repository, migrating legacy roles to modern FQCN standards and utilizing official community collections.
-- **Secure Architecture**: Established strict `ansible-lint` compliance in CI/CD pipelines. Transitioned all environment variables and credentials to a secure, template-based Ansible Vault strategy.
-- **Rolling Updates & Resiliency**: Implemented rolling server updates across hybrid systems, improving service availability and minimizing manual patching effort.
+> Lead Consultant architecting unified infrastructure suites and driving automation strategies for major Swedish industrial and retail clients.
 
-### **DevOps & Platform Engineer** | [Extrapreneur](https://github.com/extrapreneur/)
+#### **Current Assignment: Modelon** *Lund, Sweden (Remote / Hybrid) | 2026 – Present*
 
-_2022 - 2026_
+* **Ansible Modernization:** Led the refactoring of a major on-premise Ansible repository to modern FQCN standards.
+* **Secure Architecture:** Enforced `ansible-lint` in CI/CD and migrated all credentials to a template-based **Ansible Vault** strategy.
+* **Resiliency:** Implemented rolling server updates across hybrid systems, minimizing manual patching and downtime.
 
-- **Hybrid Infrastructure & IaC**: Architected the unified IaC suite (`eo-infrastructure`), employing **Azure ARM templates** for secure cloud deployments (App Services, Static Web Apps with Azure AD SSO integration) alongside **Ansible** playbooks for self-hosted service provisioning on Debian-based hosts.
-- **Infrastructure Orchestration**: Created a comprehensive **Makefile orchestration engine** (`make deploy-start`, `make update`, `make dry-run`) simplifying complex Docker Compose deployment and administration procedures for developer services (such as **n8n** connected to Qdrant/Ollama, and **Grafana** observability stacks with Loki/Prometheus/Promtail).
-- **Application & Container Lifecycle**: Maintained and optimized multi-stage **Docker builds** and composed application platforms for **`eo-alltid`** (Node.js/Express API integrated with MS Graph and ResRobot transit data) and **`eo-idag`** (React/Vite frontend hosted via Nginx).
-- **CI/CD & Documentation Pipelines**: Developed python automated workflows (`publish_docs_to_confluence.py`) integrated with GitHub Actions to publish Markdown-based documentation dynamically to Atlassian Confluence.
+#### **Internal Project: Extrapreneur Core Infrastructure**
 
-### **DevOps & SysOps Engineer** | Ingka Group (IKEA)
+_2022 – 2026_
 
-_2023 - 2025_
+* **Unified IaC:** Developed the `eo-infrastructure` suite using **Azure ARM** and Ansible for hybrid cloud/self-hosted provisioning.
+* **Orchestration Engine:** Created a **Makefile-driven** deployment engine for developer services (n8n, Qdrant, Ollama, Grafana).
+* **Auto-Documentation:** Built Python workflows to dynamically sync Markdown docs from GitHub to **Confluence**.
 
-- **Scalable Repository Management**: Managed and maintained the CI/CD and DevOps structures for over **50 code repositories** distributed across several cross-functional teams.
-- **Cloud Infrastructure (GCP)**: Designed, monitored, and scaled cloud-native infrastructure utilizing **Google Cloud Platform (GCP)**.
-- **Application Logic**: Maintained and enhanced internal tooling using **TypeScript** to optimize continuous deployment and infrastructure monitoring.
+#### **Assignment: Ingka Group (IKEA)**
 
-### **Linux & Frontend Developer** | Inter IKEA Group
+_2023 – 2025_
 
-_2022 - 2023_
+* **Scalable Repo Management:** Governed CI/CD and DevOps structures for **50+ repositories** across cross-functional teams.
+* **Cloud Infrastructure:** Designed and scaled cloud-native environments within **Google Cloud Platform (GCP)**.
 
-- **Frontend Development**: Designed and developed modern, high-performance web interfaces utilizing **TypeScript**.
-- **Cloud Hosting (AWS)**: Engineered and deployed scalable, secure application components in **Amazon Web Services (AWS)**.
-- **Linux Engineering**: Configured and maintained reliable underlying Linux environments to support application execution and dev pipelines.
+#### **Assignment: Inter IKEA Group**
+
+_2022 – 2023_
+
+* **Cloud & Linux Engineering:** Engineered scalable AWS components and maintained hardened Linux environments.
+* **Frontend Development:** Developed high-performance web interfaces utilizing **TypeScript**.
 
 ---
 
@@ -147,4 +143,4 @@ _Developer | Bash, Cron, Git_
 
 ---
 
-> _References, education and full project breakdown available upon request._
+> _References, education and full project breakdown available upon request by either buy me coffee or pay $50 an undisclosed bank account._
