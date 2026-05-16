@@ -1,0 +1,60 @@
+name: Local Config
+version: 1.0.0
+schema: v1
+models:
+  - name: Qwen 3.5 Pro (Proxmox - Docker - Ollama)
+    provider: lmstudio
+    model: google/qwen-3.5-pro
+    apiBase: "http://<domain>:<port>/v1"
+    roles:
+      - chat
+      - edit
+      - apply
+      - summarize
+  - name: Gemma 4 E4B (LM Studio)
+    provider: lmstudio
+    model: google/gemma-4-e4b
+    apiBase: "http://<domain>:<port>/v1"
+    roles:
+      - chat
+      - edit
+      - apply
+      - summarize
+      - autocomplete # Remove this role line if you want only Qwen doing tab-completions!
+    capabilities:
+      - tool_use
+      - code_lens
+
+context:
+  - provider: diff
+  - provider: terminal
+  - provider: code
+
+prompts:
+  - name: commit
+    description: Generate a git commit message for the current changes
+    prompt: "Look at the active git changes and generate a clean commit message following Conventional Commits format."
+
+rules:
+  - name: "Ignore System Files"
+    rule: "Ignore any files or directories in /var/tmp/ or /tmp/"
+  - name: "Be Concise"
+    rule: "Do not explain code that is obvious or requested directly. Minimize conversational filler like 'Sure, I can help with that!' or 'Here is your code:'."
+  - name: "Refactoring Safety"
+    rule: "When editing or refactoring code, preserve existing comments, formatting, and logging statements unless explicitly asked to modify them."
+  - name: "Modern JavaScript/TypeScript"
+    rule: "Always use modern ES6+ syntax (const/let, arrow functions, async/await). Never use 'var'."
+  - name: "No Placeholders"
+    rule: "Never write '// ... rest of your code here' or leave placeholders in refactored code blocks. Always provide the complete rewritten function or block so it can be cleanly applied."
+  - name: "Honesty & Hallucination Guard"
+    rule: "If the requested context or terminal data appears empty or missing, simply reply: 'The context appears to be empty. Please paste the error or code directly.' Do not output internal reasoning or meta-analysis."
+  - name: "Valid Markdown Fenced Blocks"
+    rule: "Always wrap code outputs in proper markdown code blocks specifying the language (e.g., ```typescript). Never nest code blocks."
+  - name: "Debian System Hygiene"
+    rule: "Adhere to strict Debian/Ubuntu practices. Do not suggest global pip installs (use venv). Combine apt-get update && apt-get install -y in single layers for containers, and clean up apt caches."
+  - name: "Idempotent DevOps Operations"
+    rule: "Ensure all sysadmin scripts and configurations are idempotent. Always verify if a state already exists before modifying configuration files, users, or permissions."
+  - name: "Secure Containers & Secrets"
+    rule: "Use explicit version tags for Docker images (avoid 'latest'). Never hardcode secrets, API keys, or passwords; always use placeholders or environment variables."
+  - name: "Robust Bash Practices"
+    rule: "When writing Bash scripts, always include 'set -euo pipefail' at the top. Always quote variables (e.g., \"$VAR\") to prevent word splitting, and prefer double brackets [[ ]] over single brackets [ ] for conditionals."
