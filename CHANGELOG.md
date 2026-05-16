@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0](https://github.com/psilore/psiloc/compare/v1.1.0...v1.2.0) (2026-05-16)
+
+
+### Features
+
+* add local configuration for models and context rules ([#18](https://github.com/psilore/psiloc/issues/18)) ([8468ca9](https://github.com/psilore/psiloc/commit/8468ca91c3c84d647d118ba50e8290ee1adb81f8))
+
 ## [1.1.0](https://github.com/psilore/psiloc/compare/v1.0.0...v1.1.0) (2026-05-10)
 
 
