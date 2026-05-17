@@ -15,39 +15,23 @@ permissions:
   contents: read
 
 jobs:
-  security-and-build:
-    name: Security Scan and Build
+  build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
 
-      - name: Set up Go
-        uses: actions/setup-go@v6
-        with:
-          go-version: ">=1.26.1"
-          cache: false
-
-      - name: Run Gosec Security Scanner
-        uses: securego/gosec@master
-        with:
-          args: ./src/...
-
-      - name: Build Application
-        run: |
-          cd src
-          go build -v -o ../setup-client main.go
-
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v7
         with:
-          name: setup-client-binary
-          path: setup-client
+          name: toolbox
+          path: scripts
           retention-days: 1
 
   deploy-dev:
     name: Deploy to Development Environment
-    needs: security-and-build
+    needs: build
     # Only deploy on merge/push to main. Skip if this is a Release Please PR being merged.
     if: "${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && !startsWith(github.event.head_commit.message, 'chore(main): release') }}"
     runs-on: ubuntu-latest
@@ -56,7 +40,7 @@ jobs:
       - name: Download Build Artifact
         uses: actions/download-artifact@v8
         with:
-          name: setup-client-binary
+          name: toolbox
 
       - name: Deploy to Dev
         run: echo "Deploying to Development Environment..."
@@ -65,6 +49,6 @@ jobs:
       - name: Store Dev Deployment Artifact
         uses: actions/upload-artifact@v7
         with:
-          name: setup-client-dev-deployed
-          path: setup-client
+          name: toolbox-dev
+          path: scripts
           retention-days: 7
