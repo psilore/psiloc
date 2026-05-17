@@ -33,17 +33,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
 
-      - name: Set up Go
-        uses: actions/setup-go@v6
-        with:
-          go-version: ">=1.26.1"
-          cache: false
-
-      - name: Build Application
-        run: |
-          cd src
-          go build -v -o ../setup-client main.go
-
       - name: Deploy to Prod
         run: echo "Deploying to Production Environment..."
         # Replace this with your actual production deployment script
@@ -51,6 +40,6 @@ jobs:
       - name: Store Prod Deployment Artifact
         uses: actions/upload-artifact@v7
         with:
-          name: setup-client-prod-deployed
-          path: setup-client
+          name: toolbox-prod
+          path: scripts
           retention-days: 14
