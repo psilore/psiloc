@@ -6,8 +6,3 @@ updates:
     schedule:
       interval: "weekly"
 
-  # Maintain dependencies for Go
-  - package-ecosystem: "gomod"
-    directory: "/src"
-    schedule:
-      interval: "weekly"
