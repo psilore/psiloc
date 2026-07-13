@@ -52,8 +52,8 @@ A versatile, hands-on Senior DevOps & AI Automation Consultant at Extrapreneur, 
 ### **Senior DevOps & Systems Consultant | Extrapreneur**
 
 > [!IMPORTANT]  
-> I am not allowed to give to much appraisal, I am going to that anyway!
-> Thank you @peter, @cecilia, @rickard and @agnes, I would not have found you, thank you for finding me
+> I am not allowed to give to much appraisal, I am going to do that anyway!
+> Thank you @peter, @cecilia, @rickard and @agnes, I would not have found you, thank you for finding me! and also for believing in me ❤️ [Extrapreneur](https://extrapreneur.se)
 
 _2022 – Present_
 
@@ -97,6 +97,10 @@ _2020 – 2022_
 - **Technical Support:** Provided technical support to various clients.
 - **Documentation Specialist:** Documented technical information for various clients.
 - **Fullstack Developer:** Desgined and developed [OpenLogger](https://openlogger.se), an IoT platform for monitoring, data logging and automation for laboratory equipment, used by several companies in Sweden.
+
+**Example feature: Monitor Liquid Level**
+
+<img src="../images/openlogger_level_mon.gif" alt="OpenLogger Level Monitor" width="350" />
 
 #### **Assignment: Vergic** _Malmö, Sweden (On site)_
 
