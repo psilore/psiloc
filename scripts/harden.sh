@@ -44,7 +44,7 @@ confirm_step() {
     fi
     local step_name="$1"
     echo -e "\n${YELLOW}[?]${NC} Apply $step_name?"
-    read -p "    Confirm action [y/N]: " response
+    read -r -p "    Confirm action [y/N]: " response
     case "$response" in
         [yY][eE][sS]|[yY])
             return 0
