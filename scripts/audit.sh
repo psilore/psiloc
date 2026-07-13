@@ -150,7 +150,7 @@ check_ssh_client() {
         if [ -f "$config" ]; then
             client_config_found=true
             local display_name
-            display_name=$(echo "$config" | sed "s|$HOME|~|")
+            display_name="${config//$HOME/~}"
             
             # Check HashKnownHosts (Anonymizes the known_hosts file)
             if grep -Ei "^\s*HashKnownHosts\s+yes" "$config" > /dev/null 2>&1; then
@@ -261,7 +261,7 @@ check_network() {
     # Check listening ports
     if command -v ss > /dev/null 2>&1; then
         local listening_count
-        listening_count=$(ss -tuln | grep "LISTEN" | grep -v "127.0.0.1" | grep -v "::1" | wc -l)
+        listening_count=$(ss -tuln | grep "LISTEN" | grep -v "127.0.0.1" | grep -c -v "::1")
         if [ "$listening_count" -gt 3 ]; then
             print_result "External Services" "WARN" "$listening_count ports" "Keep external services to a minimum."
         else

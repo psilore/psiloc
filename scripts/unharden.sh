@@ -31,7 +31,7 @@ print_success() {
 confirm_step() {
     local step_name="$1"
     echo -e "\n${YELLOW}[?]${NC} Reverse $step_name?"
-    read -p "    Confirm reversal [y/N]: " response
+    read -r -p "    Confirm reversal [y/N]: " response
     case "$response" in
         [yY][eE][sS]|[yY])
             return 0

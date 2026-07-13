@@ -513,23 +513,16 @@ show_menu() {
     echo "  15) Install Nerd Fonts"
     echo "  16) Setup GNOME Terminal profile"
     echo "  17) Install Ghostty terminal"
-<<<<<<< HEAD
     echo "  18) Uninstall Ghostty terminal"
     echo "  19) Set Zsh as default shell"
-    echo "  20) Setup UFW firewall"
-    echo "  21) Install ALL (runs all options)"
-    echo "  22) Refresh shell (reload configuration)"
-=======
-    echo "  18) Set Zsh as default shell"
-    echo "  19) Workstation Security Hardening & Firewall (harden.sh)"
-    echo "  20) Run Local Security Audit (audit.sh)"
-    echo "  21) Install ALL (runs all options)"
-    echo "  22) Refresh shell (reload configuration)"
-    echo "  23) Revert Security Hardening (unharden.sh)"
->>>>>>> 54d2b5a5c9b6785a3608e5f45e09b09ca2877c6d
+    echo "  20) Workstation Security Hardening & Firewall (harden.sh)"
+    echo "  21) Run Local Security Audit (audit.sh)"
+    echo "  22) Revert Security Hardening (unharden.sh)"
+    echo "  23) Install ALL (runs all options)"
+    echo "  24) Refresh shell (reload configuration)"
     echo "  0)  Exit"
     echo ""
-    echo -ne "${YELLOW}Enter your choice [0-22]:${NC} "
+    echo -ne "${YELLOW}Enter your choice [0-24]:${NC} "
 }
 
 # Main loop
@@ -555,16 +548,12 @@ while true; do
         15) install_nerd_fonts ;;
         16) setup_gnome_terminal ;;
         17) install_ghostty ;;
-<<<<<<< HEAD
         18) uninstall_ghostty ;;
         19) setup_zsh_default ;;
-        20) setup_firewall ;;
-=======
-        18) setup_zsh_default ;;
-        19) "$SCRIPT_DIR/harden.sh" ;;
-        20) "$SCRIPT_DIR/audit.sh" ;;
->>>>>>> 54d2b5a5c9b6785a3608e5f45e09b09ca2877c6d
-        21)
+        20) "$SCRIPT_DIR/harden.sh" ;;
+        21) "$SCRIPT_DIR/audit.sh" ;;
+        22) "$SCRIPT_DIR/unharden.sh" ;;
+        23)
             print_message "Installing everything..."
             sudo apt-get update
             install_required_packages
@@ -588,11 +577,7 @@ while true; do
             "$SCRIPT_DIR/harden.sh"
             print_message "All installations complete!"
             ;;
-        22) refresh_shell ;;
-<<<<<<< HEAD
-=======
-        23) "$SCRIPT_DIR/unharden.sh" ;;
->>>>>>> 54d2b5a5c9b6785a3608e5f45e09b09ca2877c6d
+        24) refresh_shell ;;
         0)
             print_message "Exiting setup script. Goodbye!"
             exit 0
