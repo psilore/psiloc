@@ -98,6 +98,10 @@ _2020 – 2022_
 - **Documentation Specialist:** Documented technical information for various clients.
 - **Fullstack Developer:** Desgined and developed [OpenLogger](https://openlogger.se), an IoT platform for monitoring, data logging and automation for laboratory equipment, used by several companies in Sweden.
 
+**Example feature: Monitor Liquid Level**
+
+<img src="../images/openlogger_level_mon.gif" alt="OpenLogger Level Monitor" width="350" />
+
 #### **Assignment: Vergic** _Malmö, Sweden (On site)_
 
 _2018 – 2020_
