@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0](https://github.com/psilore/psiloc/compare/v1.3.0...v1.4.0) (2026-07-13)
+
+
+### Features
+
+* add professional biography ([4de6c7b](https://github.com/psilore/psiloc/commit/4de6c7b1e105904b120b199148f62f5e3b08dfc1))
+
 ## [1.3.0](https://github.com/psilore/psiloc/compare/v1.2.0...v1.3.0) (2026-05-17)
 
 
