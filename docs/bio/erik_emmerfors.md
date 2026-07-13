@@ -52,8 +52,8 @@ A versatile, hands-on Senior DevOps & AI Automation Consultant at Extrapreneur, 
 ### **Senior DevOps & Systems Consultant | Extrapreneur**
 
 > [!IMPORTANT]  
-> I am not allowed to give to much appraisal, I am going to that anyway!
-> Thank you @peter, @cecilia, @rickard and @agnes, I would not have found you, thank you for finding me
+> I am not allowed to give to much appraisal, I am going to do that anyway!
+> Thank you @peter, @cecilia, @rickard and @agnes, I would not have found you, thank you for finding me! and also for believing in me ❤️ [Extrapreneur](https://extrapreneur.se)
 
 _2022 – Present_
 
