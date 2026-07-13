@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0](https://github.com/psilore/psiloc/compare/v1.2.0...v1.3.0) (2026-05-17)
+
+
+### Features
+
+* add session and access security auditor script ([#21](https://github.com/psilore/psiloc/issues/21)) ([e9eff78](https://github.com/psilore/psiloc/commit/e9eff7815a4b65bd20084447e7fb868010a93225))
+* add ShellCheck CI job and Makefile for script checks ([#23](https://github.com/psilore/psiloc/issues/23)) ([102fe8e](https://github.com/psilore/psiloc/commit/102fe8e583a1f5d7d10b6eaa3a0310ff70354787))
+
 ## [1.2.0](https://github.com/psilore/psiloc/compare/v1.1.0...v1.2.0) (2026-05-16)
 
 
